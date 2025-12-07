@@ -3768,87 +3768,122 @@ textarea {
     }
     
     .container {
-        padding: 0 20px;
+        padding: 0 15px;
+        max-width: 100%;
     }
     
     .section {
-        padding: 60px 0;
+        padding: 50px 0;
+    }
+    
+    .section-title {
+        font-size: 2.2rem;
+        margin-bottom: 12px;
+    }
+    
+    .section-subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 30px;
     }
     
     .landing-section {
-        padding: 40px 0;
+        padding: 30px 0;
         min-height: auto;
+    }
+    
+    .landing-content {
+        padding: 30px 15px;
     }
     
     .coffee-card,
     .dream-card,
     .letter-envelope {
-        padding: 20px;
+        padding: 18px;
+        margin-bottom: 20px;
     }
     
     .books-message {
-        padding: 30px 20px;
+        padding: 25px 15px;
     }
     
     .books-message p {
-        font-size: 1rem;
+        font-size: 0.95rem;
+        line-height: 1.7;
     }
     
     .planner-section {
-        padding: 60px 0;
+        padding: 50px 0;
     }
     
     .planner-container {
-        margin: 0 15px;
-        border-radius: 20px;
+        margin: 0 10px;
+        border-radius: 18px;
+    }
+    
+    .planner-intro {
+        padding: 20px 15px;
+    }
+    
+    .planner-intro-text {
+        font-size: 1.1rem;
     }
     
     .planner-content {
-        padding: 25px 15px;
+        padding: 20px 12px;
         max-height: none;
         overflow-y: visible;
+        min-height: auto;
     }
     
     .planner-content-title {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
+        margin-bottom: 20px;
     }
     
     .planner-tabs {
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 6px;
+        padding: 10px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
     
     .planner-tab {
-        font-size: 0.85rem;
-        padding: 10px 15px;
+        font-size: 0.8rem;
+        padding: 10px 12px;
         flex: 1;
-        min-width: calc(33.333% - 6px);
+        min-width: calc(33.333% - 5px);
+        white-space: nowrap;
     }
     
     .planner-books-header,
     .planner-notes-header {
         flex-direction: column;
         align-items: stretch;
-        gap: 15px;
+        gap: 12px;
+        margin-bottom: 20px;
     }
     
     .planner-add-btn {
         width: 100%;
-        padding: 12px;
+        padding: 12px 15px;
+        font-size: 0.9rem;
     }
     
     .books-status-tabs {
         flex-direction: row;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 6px;
+        margin-bottom: 20px;
     }
     
     .status-tab {
         flex: 1;
-        min-width: calc(33.333% - 6px);
-        font-size: 0.85rem;
-        padding: 10px;
+        min-width: calc(33.333% - 5px);
+        font-size: 0.8rem;
+        padding: 10px 8px;
+        white-space: nowrap;
     }
     
     .books-list,
@@ -3863,89 +3898,107 @@ textarea {
     }
     
     .stickers-in-notes {
-        margin-top: 30px;
-        padding-top: 25px;
+        margin-top: 25px;
+        padding-top: 20px;
     }
     
     .stickers-section-title {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
+        margin-bottom: 15px;
+    }
+    
+    .stickers-instruction {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
     }
     
     .stickers-library {
-        margin-top: 20px;
+        margin-top: 15px;
+        margin-bottom: 25px;
+    }
+    
+    .sticker-category {
+        margin-bottom: 20px;
     }
     
     .sticker-category h4 {
-        font-size: 1rem;
-        margin-bottom: 12px;
+        font-size: 0.95rem;
+        margin-bottom: 10px;
     }
     
     .stickers-grid {
-        grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
-        gap: 10px;
+        grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        gap: 8px;
     }
     
     .sticker-item {
-        padding: 10px;
+        padding: 8px;
     }
     
     .sticker-premium-new {
-        width: 75px;
-        height: 75px;
-        border-radius: 20px;
+        width: 70px;
+        height: 70px;
+        border-radius: 18px;
     }
     
     .sticker-premium-new.decorative {
-        width: 85px;
-        height: 85px;
+        width: 80px;
+        height: 80px;
         border-radius: 50%;
     }
     
     .sticker-icon-new {
-        font-size: 1.5rem;
-        margin-bottom: 3px;
+        font-size: 1.4rem;
+        margin-bottom: 2px;
     }
     
     .sticker-text-new {
-        font-size: 0.65rem;
+        font-size: 0.6rem;
     }
     
     .sticker-icon-large-new {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
     }
     
     .sticker-drop-zone {
-        padding: 20px 15px;
-        margin-top: 30px;
+        padding: 15px 12px;
+        margin-top: 25px;
     }
     
     .sticker-drop-zone::before {
-        font-size: 0.9rem;
-        top: 8px;
-        left: 15px;
+        font-size: 0.85rem;
+        top: 6px;
+        left: 12px;
+    }
+    
+    .sticker-drop-zone > p {
+        font-size: 0.85rem;
+        margin-top: 15px;
+        margin-bottom: 15px;
     }
     
     .sticker-canvas {
-        min-height: 300px;
-        height: 350px;
-        padding: 15px;
-        background-size: 15px 15px;
+        min-height: 280px;
+        height: 320px;
+        padding: 12px;
+        background-size: 12px 12px;
     }
     
     .canvas-sticker {
-        transform: scale(0.9);
+        transform: scale(0.85);
     }
     
     .library-filters-unified {
         flex-direction: column;
         gap: 8px;
-        padding: 15px;
+        padding: 12px;
+        margin-bottom: 25px;
     }
     
     .library-filter-btn {
         width: 100%;
-        padding: 10px;
-        font-size: 0.8rem;
+        padding: 12px;
+        font-size: 0.85rem;
     }
     
     .planner-library-grid {
@@ -3954,17 +4007,23 @@ textarea {
     }
     
     .unified-shelf {
-        padding: 30px 20px;
+        padding: 25px 15px;
+        gap: 12px;
     }
     
     .book-3d-item {
-        width: 60px;
-        height: 180px;
+        width: 55px;
+        height: 160px;
     }
     
     .book-3d-spine {
-        font-size: 0.6rem;
-        max-width: 50px;
+        font-size: 0.55rem;
+        max-width: 45px;
+    }
+    
+    .books-3d-shelf {
+        gap: 12px;
+        padding: 25px 15px;
     }
     
     .book-cover-options {
@@ -3992,39 +4051,54 @@ textarea {
     }
     
     .planner-modal-content {
-        padding: 25px 15px;
+        padding: 20px 15px;
         margin: 10px;
         max-height: 90vh;
         max-width: 95%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
     
     .planner-modal-title {
+        font-size: 1.6rem;
+        margin-bottom: 18px;
+    }
+    
+    .close-planner-modal {
+        top: 10px;
+        right: 15px;
         font-size: 1.8rem;
-        margin-bottom: 20px;
+        width: 32px;
+        height: 32px;
     }
     
     .form-group {
-        gap: 6px;
+        gap: 8px;
+        margin-bottom: 15px;
     }
     
     .form-group label {
-        font-size: 1rem;
+        font-size: 0.95rem;
     }
     
     .form-group input,
     .form-group textarea {
-        padding: 10px;
+        padding: 12px;
         font-size: 0.95rem;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .form-group textarea {
-        min-height: 100px;
+        min-height: 120px;
+        resize: vertical;
     }
     
     .planner-submit-btn {
-        padding: 12px 25px;
+        padding: 14px 25px;
         font-size: 0.95rem;
         width: 100%;
+        margin-top: 10px;
     }
     
     .book-card-cover {
@@ -4198,32 +4272,36 @@ textarea {
     }
     
     .stickers-grid {
-        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
         gap: 6px;
     }
     
+    .sticker-item {
+        padding: 6px;
+    }
+    
     .sticker-premium-new {
-        width: 60px;
-        height: 60px;
+        width: 65px;
+        height: 65px;
         border-radius: 15px;
     }
     
     .sticker-premium-new.decorative {
-        width: 70px;
-        height: 70px;
+        width: 75px;
+        height: 75px;
     }
     
     .sticker-icon-new {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         margin-bottom: 2px;
     }
     
     .sticker-text-new {
-        font-size: 0.55rem;
+        font-size: 0.6rem;
     }
     
     .sticker-icon-large-new {
-        font-size: 1.8rem;
+        font-size: 2rem;
     }
     
     .sticker-canvas {
@@ -4235,6 +4313,28 @@ textarea {
     
     .canvas-sticker {
         transform: scale(0.8);
+    }
+    
+    .sticker-drop-zone {
+        padding: 12px 8px;
+    }
+    
+    .sticker-drop-zone::before {
+        font-size: 0.75rem;
+        top: 5px;
+        left: 8px;
+    }
+    
+    .stickers-section-title {
+        font-size: 1.2rem;
+    }
+    
+    .stickers-instruction {
+        font-size: 1rem;
+    }
+    
+    .sticker-category h4 {
+        font-size: 0.9rem;
     }
     
     .sticker-drop-zone {
@@ -4270,14 +4370,28 @@ textarea {
     }
     
     .planner-modal-content {
-        padding: 18px 10px;
-        margin: 3px;
-        max-width: 99%;
+        padding: 18px 12px;
+        margin: 5px;
+        max-width: 98%;
+        max-height: 95vh;
     }
     
     .planner-modal-title {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         margin-bottom: 15px;
+    }
+    
+    .close-planner-modal {
+        top: 8px;
+        right: 12px;
+        font-size: 1.6rem;
+        width: 30px;
+        height: 30px;
+    }
+    
+    .form-group {
+        gap: 6px;
+        margin-bottom: 12px;
     }
     
     .form-group label {
@@ -4286,17 +4400,22 @@ textarea {
     
     .form-group input,
     .form-group textarea {
-        padding: 10px;
-        font-size: 0.85rem;
+        padding: 12px;
+        font-size: 0.9rem;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .form-group textarea {
-        min-height: 100px;
+        min-height: 120px;
+        resize: vertical;
     }
     
     .planner-submit-btn {
-        padding: 10px;
-        font-size: 0.85rem;
+        padding: 14px;
+        font-size: 0.9rem;
+        width: 100%;
+        margin-top: 10px;
     }
     
     .note-card {
@@ -4421,22 +4540,30 @@ textarea {
     }
     
     .planner-container {
-        margin: 0 10px;
+        margin: 0 8px;
         border-radius: 15px;
     }
     
     .planner-content {
-        padding: 20px 15px;
-        max-height: 500px;
+        padding: 18px 10px;
+        max-height: none;
+        overflow-y: visible;
     }
     
     .planner-content-title {
-        font-size: 1.8rem;
+        font-size: 1.4rem;
+        margin-bottom: 15px;
     }
     
     .planner-tab {
-        font-size: 0.85rem;
-        padding: 10px;
+        font-size: 0.75rem;
+        padding: 10px 8px;
+        min-width: calc(33.333% - 4px);
+    }
+    
+    .planner-tabs {
+        gap: 4px;
+        padding: 8px;
     }
     
     .book-card,
