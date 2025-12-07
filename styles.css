@@ -204,7 +204,7 @@ textarea {
     animation: fadeInUp 1.4s ease-out;
     border: 2px solid rgba(212, 165, 165, 0.3);
     position: relative;
-    background-image: url('img/imgi_14_500514083_18504798991042026_329275683500636744_n.jpg');
+    background-image: url('./img/imgi_14_500514083_18504798991042026_329275683500636744_n.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
