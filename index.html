@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Para a menina mais doce que já conheci - Um presente especial com tudo que você ama">
+    <title>Para a menina mais doce que já conheci 💕</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Sacramento&family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Pétalas caindo -->
+    <div class="petals-container"></div>
+    
+    <!-- Trilha Sonora -->
+    <div class="music-player">
+        <button id="music-toggle" class="music-btn">🎵</button>
+        <iframe id="spotify-player" style="display: none;" src="https://open.spotify.com/embed/track/1dGr1c8CrMLDpV6mPbImSI?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+    </div>
+
+    <!-- Landing Page com Dedicação -->
+    <section id="landing" class="landing-section">
+        <div class="hearts-floating"></div>
+        <div class="landing-content">
+            <h1 class="main-title">Para a menina mais doce que já conheci</h1>
+            <div class="subtitle">Minha Juliana, o mundo é mais bonito contigo</div>
+            <div class="dedication-card">
+                <p class="dedication-text typewriter">
+                    Minha Juliana,
+
+                    Não há nada no mundo que me faça mais feliz do que ver você feliz. 
+                    Cada sorriso seu é como um raio de sol, cada risada sua é a melodia mais 
+                    doce que já ouvi. Ver você imersa em um livro de Colleen Hoover, completamente 
+                    perdida na história, ou te ver preparando um café da manhã especial, com todo 
+                    aquele cuidado e carinho - esses são os momentos que guardo no coração.
+
+                    Este site é uma dedicação a você. Um lugar onde reuni tudo que você ama: 
+                    seus livros de romance e suspense, seus sonhos de viagem, os cafés que você 
+                    adora, e a magia Disney que faz seus olhos brilharem. Cada seção aqui foi 
+                    pensada em você, porque você merece o mundo e muito mais.
+
+                    Você ama livros, especialmente os de Colleen Hoover, e eu amo ver você 
+                    perdida nas páginas. Você ama cafés da manhã, e eu amo ver você feliz enquanto 
+                    prepara cada detalhe. Você ama Disney, e eu amo imaginar seus olhos brilhando 
+                    ao ver o castelo pela primeira vez.
+
+                    <span class="signature">Este é meu presente para você. Porque ver você feliz é tudo que eu preciso. Te amo mais que todas as páginas de todos os livros do mundo. 💕</span>
+                </p>
+            </div>
+            <button class="scroll-btn" onclick="scrollToContent()">
+                <span>Começar nossa história</span>
+                <span class="arrow">↓</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Navegação -->
+    <nav class="main-nav">
+        <div class="container">
+            <a href="#disney-section" class="nav-item">🏰 Disney</a>
+            <a href="#travels-section" class="nav-item">✉️ Cartas</a>
+            <a href="#coffee-section" class="nav-item">☕ Cafés</a>
+            <a href="#books-section" class="nav-item">📚 Livros</a>
+            <a href="#gallery-section" class="nav-item">📸 Memórias</a>
+        </div>
+    </nav>
+
+    <!-- Seção Disney -->
+    <section id="disney-section" class="section disney-section">
+        <div class="container">
+            <h2 class="section-title">🏰 Seus Sonhos Disney</h2>
+            <p class="section-subtitle">Memórias mágicas e sonhos que ainda vamos realizar juntos</p>
+            <div id="disney-dreams" class="dreams-grid"></div>
+        </div>
+    </section>
+
+    <!-- Seção Cartas (Viagens) -->
+    <section id="travels-section" class="section travels-section">
+        <div class="container">
+            <h2 class="section-title">✉️ Cartas que ainda vamos escrever juntos</h2>
+            <p class="section-subtitle">Cada destino é uma promessa de amor</p>
+            <div id="travel-letters" class="letters-grid"></div>
+        </div>
+    </section>
+
+    <!-- Seção Cafés -->
+    <section id="coffee-section" class="section coffee-section">
+        <div class="container">
+            <h2 class="section-title">☕ Onde já tomamos café de mãos dadas e onde ainda vamos</h2>
+            <p class="section-subtitle">Cada xícara é um momento especial</p>
+            <div id="coffee-spots" class="coffee-grid"></div>
+        </div>
+    </section>
+
+    <!-- Seção Livros -->
+    <section id="books-section" class="section books-section">
+        <div class="container">
+            <h2 class="section-title">📚 Sua Biblioteca dos Sonhos</h2>
+            <p class="section-subtitle">Livros de romance e suspense que você ama</p>
+            <div class="books-container">
+                <div class="colleen-hoover-section">
+                    <h3 class="author-title">✨ Colleen Hoover - Sua Autora Favorita ✨</h3>
+                    <div id="colleen-books" class="books-3d-shelf"></div>
+                </div>
+                <div class="other-books-section">
+                    <h3 class="author-title">Outros Livros de Romance e Suspense</h3>
+                    <div id="other-books" class="books-3d-shelf"></div>
+                </div>
+                <div class="books-message">
+                    <p>📖 Ver você lendo é uma das coisas mais lindas que já vi. Aquela expressão de encantamento quando você está imersa em uma história, especialmente nos livros da Colleen Hoover... É mágico. A forma como você se dedica a cada página, como você se emociona com cada personagem, como você fica completamente perdida no mundo que o autor criou - isso mostra o quanto você é doce, sensível e especial. Sua paixão pela leitura é uma das coisas que mais me encanta em você. Quero ler com você em cafés aconchegantes, descobrindo novas histórias enquanto criamos a nossa própria. Você é a menina mais doce que já conheci, e ver você feliz com um livro nas mãos é ver você em seu elemento mais puro. ✨</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galeria de Fotos - Carrossel com Torre Eiffel -->
+    <section id="gallery-section" class="section gallery-section">
+        <div class="container">
+            <h2 class="section-title">📸 Memórias Preciosas</h2>
+            <p class="section-subtitle">Cada foto é uma lembrança que guardo no coração</p>
+            <div class="camera-intro">
+                <p class="camera-text">✨ Minhas memórias favoritas de você ✨</p>
+            </div>
+            <div class="carousel-container">
+                <div class="eiffel-tower-center">
+                    <div class="eiffel-tower">🗼</div>
+                    <p class="tower-text">Você mais linda que a Torre Eiffel</p>
+                </div>
+                <div id="photo-carousel" class="photo-carousel"></div>
+            </div>
+            <!-- Foto secreta -->
+            <div class="secret-photo-container">
+                <div class="secret-heart" onclick="revealSecretPhoto()">💕</div>
+                <p class="secret-hint">Tem uma surpresinha aqui...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer com Página Secreta -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">
+                Feito com todo meu amor para você, minha Juliana 💕<br>
+                <span class="footer-date">06/12/2025</span><br>
+                <span class="footer-love">Por Michel Almeida<br>Seu grande amor</span>
+            </p>
+            <div class="secret-link" onclick="openSecretPage()">
+                <span class="secret-heart-small">💕</span>
+                <span class="secret-text">tem um segredo aqui</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal para Foto Grande -->
+    <div id="photo-modal" class="photo-modal">
+        <span class="close-photo-modal">&times;</span>
+        <img id="modal-photo-img" class="modal-photo-img" alt="Foto" onclick="event.stopPropagation()">
+    </div>
+
+    <!-- Modal para Livro -->
+    <div id="book-modal" class="book-modal">
+        <div class="book-modal-content-wrapper">
+            <span class="close-book-modal">&times;</span>
+            <div id="book-modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Página Secreta -->
+    <div id="secret-page" class="secret-page">
+        <div class="secret-content">
+            <span class="close-secret">&times;</span>
+            <h2 class="secret-title">Para você, minha Juliana</h2>
+            <div class="secret-letter">
+                <p class="secret-letter-text">
+                    Meu amor,<br><br>
+                    Se você está lendo isso, significa que você descobriu meu segredinho. 
+                    Eu queria criar algo especial, algo que mostrasse o quanto você significa para mim.<br><br>
+                    Cada página deste site foi feita pensando em você. Nos seus sorrisos, 
+                    nas suas risadas, na forma como você fica quando está lendo um livro, 
+                    na magia dos seus olhos quando fala de Disney.<br><br>
+                    Você é a pessoa mais incrível que eu conheci. E eu quero passar o resto 
+                    da minha vida fazendo você feliz, criando memórias, lendo livros juntos, 
+                    tomando café da manhã em lugares incríveis, e vendo seus olhos brilharem 
+                    em cada novo lugar que descobrirmos.<br><br>
+                    <span class="secret-signature">Te amo mais que todas as palavras de todos os livros. Para sempre seu. 💕</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="gallery.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

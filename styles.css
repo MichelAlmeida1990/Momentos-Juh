@@ -1,0 +1,1640 @@
+:root {
+    --color-lavender: #E6D5F7;
+    --color-rose: #F4C2C2;
+    --color-peach: #FFD9B3;
+    --color-cream: #FFF8F0;
+    --color-pink-old: #D4A5A5;
+    --color-text: #5D4E75;
+    --color-text-light: #8B7A9F;
+    --color-white: #FFFFFF;
+    --shadow-soft: 0 4px 20px rgba(212, 165, 165, 0.15);
+    --shadow-medium: 0 8px 30px rgba(212, 165, 165, 0.25);
+    --shadow-strong: 0 12px 40px rgba(212, 165, 165, 0.35);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    color: var(--color-text);
+    background: linear-gradient(180deg, var(--color-lavender) 0%, var(--color-rose) 50%, var(--color-peach) 100%);
+    background-attachment: fixed;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Pétalas caindo */
+.petals-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.petal {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: linear-gradient(135deg, #FFB6C1, #FFC0CB);
+    border-radius: 50% 0 50% 0;
+    opacity: 0.6;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-100px) rotate(0deg);
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Corações flutuantes */
+.hearts-floating {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.floating-heart {
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0.4;
+    animation: floatHeart ease-in-out infinite;
+}
+
+@keyframes floatHeart {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.4;
+    }
+    50% {
+        transform: translateY(-20px) translateX(10px);
+        opacity: 0.7;
+    }
+}
+
+/* Player de música */
+.music-player {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.music-btn {
+    background: var(--color-rose);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-medium);
+    transition: all 0.3s ease;
+}
+
+.music-btn:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-strong);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Landing Section */
+.landing-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: linear-gradient(135deg, var(--color-lavender) 0%, var(--color-rose) 50%, var(--color-peach) 100%);
+    overflow: hidden;
+    z-index: 2;
+}
+
+.landing-content {
+    text-align: center;
+    z-index: 3;
+    padding: 40px 20px;
+    max-width: 800px;
+    position: relative;
+}
+
+.main-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: 5rem;
+    color: var(--color-text);
+    margin-bottom: 15px;
+    font-weight: 400;
+    animation: fadeInUp 1s ease-out;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+}
+
+.subtitle {
+    font-family: 'Sacramento', cursive;
+    font-size: 2rem;
+    color: var(--color-text-light);
+    margin-bottom: 40px;
+    animation: fadeInUp 1.2s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dedication-card {
+    background: var(--color-cream);
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-medium);
+    margin-bottom: 40px;
+    animation: fadeInUp 1.4s ease-out;
+    border: 2px solid rgba(212, 165, 165, 0.3);
+    position: relative;
+}
+
+.dedication-card::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: linear-gradient(135deg, var(--color-lavender), var(--color-rose), var(--color-peach));
+    border-radius: 20px;
+    z-index: -1;
+    opacity: 0.3;
+}
+
+.dedication-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    line-height: 1.9;
+    color: var(--color-text);
+    font-weight: 400;
+    text-align: left;
+    white-space: pre-line;
+}
+
+.typewriter {
+    opacity: 0;
+}
+
+.signature {
+    display: block;
+    margin-top: 25px;
+    font-family: 'Sacramento', cursive;
+    font-size: 2rem;
+    color: var(--color-pink-old);
+    font-weight: 400;
+    text-align: center;
+}
+
+.scroll-btn {
+    background: linear-gradient(135deg, var(--color-rose), var(--color-pink-old));
+    color: var(--color-white);
+    border: none;
+    padding: 15px 40px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 auto;
+    animation: fadeInUp 1.6s ease-out;
+    font-family: 'Poppins', sans-serif;
+}
+
+.scroll-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-medium);
+}
+
+.arrow {
+    font-size: 1.5rem;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Navigation */
+.main-nav {
+    position: sticky;
+    top: 0;
+    background: rgba(255, 248, 240, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 20px 0;
+    box-shadow: var(--shadow-soft);
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.main-nav.nav-scrolled {
+    box-shadow: var(--shadow-medium);
+    padding: 15px 0;
+}
+
+.main-nav .container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.nav-item {
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.nav-item:hover {
+    color: var(--color-pink-old);
+    background: rgba(212, 165, 165, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Sections */
+.section {
+    padding: 80px 0;
+    position: relative;
+    z-index: 2;
+}
+
+.section-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.5rem;
+    text-align: center;
+    color: var(--color-text);
+    margin-bottom: 15px;
+    font-weight: 400;
+}
+
+.section-subtitle {
+    text-align: center;
+    color: var(--color-text-light);
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+    font-family: 'Playfair Display', serif;
+}
+
+/* Disney Section */
+.disney-section {
+    background: linear-gradient(180deg, rgba(255, 248, 240, 0.8) 0%, rgba(230, 213, 247, 0.8) 100%);
+}
+
+.dreams-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.dream-card {
+    background: var(--color-cream);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-soft);
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+}
+
+.dream-card.dream-visited {
+    border: 3px solid var(--color-rose);
+    background: linear-gradient(135deg, var(--color-cream), rgba(244, 194, 194, 0.2));
+}
+
+.dream-card.dream-visited::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(135deg, var(--color-lavender), var(--color-rose), var(--color-peach));
+    border-radius: 15px;
+    z-index: -1;
+    opacity: 0.3;
+}
+
+.visited-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, var(--color-rose), var(--color-pink-old));
+    color: var(--color-white);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: var(--shadow-soft);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.dream-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--color-rose);
+}
+
+.dream-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.dream-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--color-text);
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.dream-description {
+    color: var(--color-text-light);
+    line-height: 1.8;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Travel Letters Section */
+.travels-section {
+    background: linear-gradient(180deg, rgba(230, 213, 247, 0.8) 0%, rgba(244, 194, 194, 0.8) 100%);
+}
+
+.letters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    margin-top: 40px;
+    perspective: 1000px;
+}
+
+.letter-envelope {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    cursor: pointer;
+    animation: fadeInUp 0.6s ease-out both;
+}
+
+.envelope-front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--color-cream), var(--color-peach));
+    border: 3px solid var(--color-pink-old);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-medium);
+    transition: all 0.5s ease;
+    backface-visibility: hidden;
+    z-index: 2;
+}
+
+.envelope-seal {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.envelope-destination {
+    font-family: 'Sacramento', cursive;
+    font-size: 1.8rem;
+    color: var(--color-text);
+    text-align: center;
+}
+
+.envelope-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--color-cream);
+    border: 3px solid var(--color-pink-old);
+    border-radius: 10px;
+    box-shadow: var(--shadow-medium);
+    transform: rotateY(180deg);
+    backface-visibility: hidden;
+    transition: all 0.5s ease;
+    overflow: hidden;
+}
+
+.letter-envelope.envelope-opened .envelope-front {
+    transform: rotateY(180deg);
+}
+
+.letter-envelope.envelope-opened .envelope-back {
+    transform: rotateY(0deg);
+    z-index: 3;
+}
+
+.letter-content {
+    padding: 20px;
+    height: 100%;
+    overflow-y: auto;
+    position: relative;
+}
+
+.close-letter {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 30px;
+    cursor: pointer;
+    color: var(--color-text);
+    z-index: 10;
+}
+
+.letter-image-wrapper {
+    width: 100%;
+    height: 150px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.letter-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.letter-text {
+    text-align: left;
+}
+
+.letter-destination {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--color-text);
+    margin-bottom: 10px;
+}
+
+.letter-message {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--color-text-light);
+    font-style: italic;
+    white-space: pre-line;
+}
+
+/* Coffee Section */
+.coffee-section {
+    background: linear-gradient(180deg, rgba(244, 194, 194, 0.8) 0%, rgba(255, 217, 179, 0.8) 100%);
+}
+
+.coffee-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.coffee-card {
+    background: var(--color-cream);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: var(--shadow-soft);
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+}
+
+.coffee-card::before {
+    content: '☕';
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    font-size: 2rem;
+    background: var(--color-rose);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-soft);
+}
+
+.coffee-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--color-rose);
+}
+
+.coffee-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.coffee-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--color-text);
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.coffee-description {
+    color: var(--color-text-light);
+    line-height: 1.8;
+    margin-bottom: 15px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.coffee-memory {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--color-pink-old);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(212, 165, 165, 0.3);
+}
+
+/* Books Section */
+.books-section {
+    background: linear-gradient(180deg, rgba(255, 217, 179, 0.8) 0%, rgba(255, 248, 240, 0.8) 100%);
+}
+
+.books-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.author-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    color: var(--color-text);
+    margin: 40px 0 30px;
+    text-align: center;
+    font-weight: 400;
+}
+
+.colleen-hoover-section .author-title {
+    color: var(--color-pink-old);
+}
+
+/* Estante 3D Criativa */
+.books-3d-shelf {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 40px;
+    padding: 40px;
+    background: linear-gradient(135deg, rgba(255, 248, 240, 0.6), rgba(230, 213, 247, 0.4));
+    border-radius: 25px;
+    border: 3px solid rgba(212, 165, 165, 0.3);
+    position: relative;
+    perspective: 1200px;
+    min-height: 300px;
+}
+
+.books-3d-shelf::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(90deg, 
+        rgba(139, 69, 19, 0.3) 0%, 
+        rgba(160, 82, 45, 0.4) 50%, 
+        rgba(139, 69, 19, 0.3) 100%);
+    border-radius: 0 0 25px 25px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.book-3d-item {
+    width: 80px;
+    height: 220px;
+    position: relative;
+    cursor: pointer;
+    animation: fadeInUp 0.6s ease-out both;
+    transform-style: preserve-3d;
+}
+
+.book-3d-cover {
+    width: 100%;
+    height: 100%;
+    background: var(--book-color);
+    border-radius: 3px 8px 8px 3px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.2),
+        inset -5px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.book-3d-cover::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 8px;
+    background: linear-gradient(90deg, 
+        rgba(0, 0, 0, 0.3) 0%, 
+        rgba(0, 0, 0, 0.1) 100%);
+    border-radius: 3px 0 0 3px;
+}
+
+.book-3d-cover::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 10%;
+    bottom: 10%;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.book-3d-item:hover .book-3d-cover {
+    transform: translateY(-15px) rotateY(-15deg) scale(1.1);
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        0 0 20px var(--book-color),
+        inset -5px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.book-3d-spine {
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    color: var(--color-white);
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 1px;
+    max-width: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.book-3d-pages {
+    position: absolute;
+    right: 0;
+    top: 5%;
+    bottom: 5%;
+    width: 3px;
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0.8) 0%, 
+        rgba(255, 255, 255, 0.4) 50%, 
+        rgba(255, 255, 255, 0.2) 100%);
+    border-radius: 0 2px 2px 0;
+}
+
+.book-3d-item:hover .book-3d-pages {
+    width: 5px;
+    box-shadow: 2px 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.books-message {
+    background: linear-gradient(135deg, var(--color-cream), rgba(244, 194, 194, 0.2));
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-medium);
+    text-align: center;
+    border: 3px solid rgba(212, 165, 165, 0.3);
+    margin-top: 40px;
+    position: relative;
+}
+
+.books-message::before {
+    content: '📚';
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    background: var(--color-cream);
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: var(--shadow-soft);
+}
+
+.books-message p {
+    font-size: 1.2rem;
+    line-height: 1.9;
+    color: var(--color-text);
+    margin: 0;
+    font-weight: 300;
+    font-family: 'Playfair Display', serif;
+}
+
+/* Gallery Section - Carrossel com Torre Eiffel */
+.gallery-section {
+    background: linear-gradient(180deg, rgba(255, 248, 240, 0.8) 0%, rgba(230, 213, 247, 0.8) 100%);
+    padding: 100px 0;
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eiffel-tower-center {
+    position: absolute;
+    z-index: 10;
+    text-align: center;
+}
+
+.eiffel-tower {
+    font-size: 8rem;
+    filter: drop-shadow(0 0 20px rgba(212, 165, 165, 0.5));
+    animation: towerPulse 3s ease-in-out infinite;
+}
+
+@keyframes towerPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.tower-text {
+    font-family: 'Sacramento', cursive;
+    font-size: 1.8rem;
+    color: var(--color-pink-old);
+    margin-top: 15px;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+}
+
+.photo-carousel {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    margin: 0 auto;
+    transform-origin: center center;
+}
+
+.carousel-photo {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    top: 50%;
+    left: 50%;
+    margin-left: -75px;
+    margin-top: -75px;
+    transform-origin: 250px 0;
+    animation: rotateCarousel 30s linear infinite;
+}
+
+/* Delays calculados dinamicamente no JavaScript */
+
+@keyframes rotateCarousel {
+    from {
+        transform: rotate(0deg) translateX(250px) rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg) translateX(250px) rotate(-360deg);
+    }
+}
+
+.carousel-photo-wrapper {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.carousel-photo-wrapper:hover {
+    transform: scale(1.2);
+    z-index: 20;
+}
+
+.camera-effect {
+    perspective: 1000px;
+}
+
+.camera-frame {
+    width: 100%;
+    height: 100%;
+    background: var(--color-white);
+    border-radius: 15px;
+    padding: 8px;
+    box-shadow: 
+        0 0 0 3px var(--color-cream),
+        0 0 0 6px var(--color-pink-old),
+        var(--shadow-medium);
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transition: all 0.3s ease;
+}
+
+.carousel-photo-wrapper:hover .camera-frame {
+    transform: rotateY(5deg) rotateX(5deg);
+    box-shadow: 
+        0 0 0 3px var(--color-cream),
+        0 0 0 6px var(--color-rose),
+        0 0 30px rgba(244, 194, 194, 0.6),
+        var(--shadow-strong);
+}
+
+.camera-flash {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    background: var(--color-cream);
+    border-radius: 50%;
+    box-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.8),
+        inset 0 0 5px rgba(0, 0, 0, 0.2);
+    z-index: 5;
+    animation: flashPulse 2s ease-in-out infinite;
+}
+
+@keyframes flashPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; box-shadow: 0 0 15px rgba(255, 255, 255, 1); }
+}
+
+.carousel-image {
+    width: 100%;
+    height: calc(100% - 40px);
+    object-fit: cover;
+    border-radius: 8px;
+    filter: brightness(1.05) contrast(1.1);
+    transition: filter 0.3s ease;
+}
+
+.carousel-photo-wrapper:hover .carousel-image {
+    filter: brightness(1.1) contrast(1.15);
+}
+
+.photo-memory {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    font-family: 'Sacramento', cursive;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    text-align: center;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 5px 8px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 6;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+}
+
+.carousel-photo-wrapper:hover .photo-memory {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.camera-intro {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.camera-text {
+    font-family: 'Sacramento', cursive;
+    font-size: 1.8rem;
+    color: var(--color-pink-old);
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);
+}
+
+.carousel-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(230, 213, 247, 0.8), rgba(244, 194, 194, 0.8));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 10px;
+}
+
+.carousel-photo-wrapper:hover .carousel-overlay {
+    opacity: 1;
+}
+
+.carousel-heart {
+    font-size: 2rem;
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Foto Secreta */
+.secret-photo-container {
+    text-align: center;
+    margin-top: 40px;
+    padding: 30px;
+}
+
+.secret-heart {
+    font-size: 3rem;
+    cursor: pointer;
+    animation: pulse 2s ease-in-out infinite;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.secret-heart:hover {
+    transform: scale(1.2);
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.secret-hint {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--color-text-light);
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+.secret-photo-revealed {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.secret-photo-img {
+    max-width: 400px;
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: var(--shadow-medium);
+    border: 5px solid var(--color-cream);
+}
+
+.secret-photo-text {
+    font-family: 'Sacramento', cursive;
+    font-size: 1.8rem;
+    color: var(--color-pink-old);
+    margin-top: 15px;
+}
+
+/* Book Modal */
+.book-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.book-modal-content-wrapper {
+    background: var(--color-cream);
+    max-width: 700px;
+    width: 100%;
+    max-height: 90vh;
+    border-radius: 20px;
+    box-shadow: var(--shadow-strong);
+    position: relative;
+    overflow-y: auto;
+    animation: zoomIn 0.3s ease;
+}
+
+.close-book-modal {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 40px;
+    cursor: pointer;
+    color: var(--color-text);
+    z-index: 10;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    transition: all 0.3s ease;
+}
+
+.close-book-modal:hover {
+    background: var(--color-rose);
+    color: var(--color-white);
+    transform: rotate(90deg);
+}
+
+.book-modal-cover {
+    padding: 50px 40px;
+    text-align: center;
+    border-radius: 20px 20px 0 0;
+    position: relative;
+}
+
+.book-modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--color-white);
+    font-weight: 700;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    margin-bottom: 10px;
+}
+
+.book-modal-author {
+    font-family: 'Sacramento', cursive;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.book-modal-content {
+    padding: 40px;
+}
+
+.book-modal-synopsis-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--color-text);
+    margin-bottom: 20px;
+    font-weight: 600;
+    border-bottom: 2px solid var(--color-rose);
+    padding-bottom: 10px;
+}
+
+.book-modal-synopsis {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    line-height: 1.9;
+    color: var(--color-text);
+    text-align: justify;
+}
+
+/* Photo Modal */
+.photo-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-photo-img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    border-radius: 15px;
+    box-shadow: 0 0 50px rgba(212, 165, 165, 0.5);
+    animation: zoomIn 0.3s ease;
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.close-photo-modal {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    font-size: 50px;
+    font-weight: bold;
+    color: var(--color-white);
+    cursor: pointer;
+    z-index: 2001;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(212, 165, 165, 0.8);
+    transition: all 0.3s ease;
+}
+
+.close-photo-modal:hover {
+    background: var(--color-rose);
+    transform: rotate(90deg) scale(1.1);
+}
+
+/* Footer */
+.footer {
+    background: linear-gradient(135deg, var(--color-pink-old), var(--color-rose));
+    padding: 40px 0;
+    text-align: center;
+    color: var(--color-white);
+    position: relative;
+}
+
+.footer-text {
+    font-family: 'Sacramento', cursive;
+    font-size: 1.5rem;
+}
+
+.footer-date {
+    display: block;
+    margin-top: 10px;
+    opacity: 0.9;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.footer-love {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+}
+
+.secret-link {
+    margin-top: 20px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.secret-link:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.secret-heart-small {
+    font-size: 1.2rem;
+    display: inline-block;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.secret-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.9rem;
+    margin-left: 5px;
+}
+
+/* Página Secreta */
+.secret-page {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--color-lavender), var(--color-rose), var(--color-peach));
+    z-index: 3000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.secret-content {
+    background: var(--color-cream);
+    max-width: 700px;
+    width: 100%;
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-strong);
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: zoomIn 0.5s ease;
+}
+
+.close-secret {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 40px;
+    cursor: pointer;
+    color: var(--color-text);
+    transition: all 0.3s ease;
+}
+
+.close-secret:hover {
+    transform: rotate(90deg);
+    color: var(--color-pink-old);
+}
+
+.secret-title {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3rem;
+    color: var(--color-text);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.secret-letter {
+    text-align: left;
+}
+
+.secret-letter-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    line-height: 1.9;
+    color: var(--color-text);
+}
+
+.secret-signature {
+    display: block;
+    margin-top: 25px;
+    font-family: 'Sacramento', cursive;
+    font-size: 1.8rem;
+    color: var(--color-pink-old);
+    text-align: center;
+}
+
+.secret-media {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.secret-media-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--color-text-light);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 3rem;
+    }
+    
+    .subtitle {
+        font-size: 1.5rem;
+    }
+    
+    .dedication-card {
+        padding: 30px;
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+    }
+    
+    .letters-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .dreams-grid,
+    .coffee-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .carousel-container {
+        height: 400px;
+    }
+    
+    .photo-carousel {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .carousel-photo {
+        width: 100px;
+        height: 100px;
+        transform-origin: 150px 0;
+    }
+    
+    .eiffel-tower {
+        font-size: 5rem;
+    }
+    
+    .tower-text {
+        font-size: 1.3rem;
+    }
+    
+    @keyframes rotateCarousel {
+        from {
+            transform: rotate(0deg) translateX(150px) rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg) translateX(150px) rotate(-360deg);
+        }
+    }
+    
+    .books-3d-shelf {
+        gap: 15px;
+        padding: 30px 20px;
+    }
+    
+    .book-3d-item {
+        width: 60px;
+        height: 180px;
+    }
+    
+    .book-3d-spine {
+        font-size: 0.65rem;
+        max-width: 50px;
+    }
+    
+    .book-modal-content-wrapper {
+        max-width: 95%;
+        margin: 10px;
+    }
+    
+    .book-modal-title {
+        font-size: 2rem;
+    }
+    
+    .book-modal-content {
+        padding: 30px 20px;
+    }
+    
+    .main-nav .container {
+        gap: 15px;
+    }
+    
+    .nav-item {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+    
+    .secret-content {
+        padding: 30px;
+    }
+    
+    .secret-title {
+        font-size: 2rem;
+    }
+    
+    .dedication-text {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+    
+    .container {
+        padding: 0 20px;
+    }
+    
+    .section {
+        padding: 60px 0;
+    }
+    
+    .landing-section {
+        padding: 40px 0;
+        min-height: auto;
+    }
+    
+    .coffee-card,
+    .dream-card,
+    .letter-envelope {
+        padding: 20px;
+    }
+    
+    .books-message {
+        padding: 30px 20px;
+    }
+    
+    .books-message p {
+        font-size: 1rem;
+    }
+    
+    .author-title {
+        font-size: 2rem;
+    }
+    
+    .footer-text {
+        font-size: 1.2rem;
+    }
+    
+    .footer-date,
+    .footer-love {
+        font-size: 0.85rem;
+    }
+    
+    .main-nav {
+        padding: 15px 0;
+    }
+    
+    .main-nav .container {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .nav-item {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+    }
+    
+    .scroll-btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+    
+    .photo-modal-content {
+        width: 95%;
+        max-width: 95%;
+        padding: 20px;
+    }
+    
+    .book-modal-content-wrapper {
+        width: 95%;
+        max-width: 95%;
+    }
+    
+    .secret-letter-text {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+    
+    .secret-signature {
+        font-size: 1.5rem;
+    }
+}
+
+/* Mobile muito pequeno */
+@media (max-width: 480px) {
+    .main-title {
+        font-size: 2.5rem;
+    }
+    
+    .subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .section-subtitle {
+        font-size: 1rem;
+    }
+    
+    .dedication-card {
+        padding: 20px;
+    }
+    
+    .dedication-text {
+        font-size: 0.9rem;
+    }
+    
+    .carousel-container {
+        height: 350px;
+    }
+    
+    .photo-carousel {
+        width: 250px;
+        height: 250px;
+    }
+    
+    .carousel-photo {
+        width: 80px;
+        height: 80px;
+        transform-origin: 125px 0;
+    }
+    
+    .eiffel-tower {
+        font-size: 4rem;
+    }
+    
+    .tower-text {
+        font-size: 1.1rem;
+    }
+    
+    @keyframes rotateCarousel {
+        from {
+            transform: rotate(0deg) translateX(125px) rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg) translateX(125px) rotate(-360deg);
+        }
+    }
+    
+    .book-3d-item {
+        width: 50px;
+        height: 150px;
+    }
+    
+    .book-3d-spine {
+        font-size: 0.55rem;
+        max-width: 45px;
+    }
+    
+    .books-3d-shelf {
+        gap: 10px;
+        padding: 20px 15px;
+    }
+    
+    .nav-item {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+    
+    .coffee-card h3,
+    .dream-card h3 {
+        font-size: 1.3rem;
+    }
+    
+    .coffee-card p,
+    .dream-card p {
+        font-size: 0.9rem;
+    }
+    
+    .letter-seal {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+    
+    .secret-content {
+        padding: 20px;
+    }
+    
+    .secret-title {
+        font-size: 1.5rem;
+    }
+    
+    .secret-letter-text {
+        font-size: 0.9rem;
+    }
+    
+    .footer-text {
+        font-size: 1rem;
+    }
+}
