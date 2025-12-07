@@ -2,10 +2,11 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta name="description" content="Para a menina mais doce que já conheci - Um presente especial com tudo que você ama">
     <title>Para a menina mais doce que já conheci 💕</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="sticker-styles-new.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Sacramento&family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -63,6 +64,7 @@
             <a href="#travels-section" class="nav-item">✉️ Cartas</a>
             <a href="#coffee-section" class="nav-item">☕ Cafés</a>
             <a href="#books-section" class="nav-item">📚 Livros</a>
+            <a href="#planner-section" class="nav-item">📝 Planner</a>
             <a href="#gallery-section" class="nav-item">📸 Memórias</a>
         </div>
     </nav>
@@ -99,18 +101,676 @@
         <div class="container">
             <h2 class="section-title">📚 Sua Biblioteca dos Sonhos</h2>
             <p class="section-subtitle">Livros de romance e suspense que você ama</p>
+            
+            <!-- Filtros Unificados da Biblioteca -->
+            <div class="library-filters-unified">
+                <button class="library-filter-btn active" data-filter="all">📚 Todos</button>
+                <button class="library-filter-btn" data-filter="colleen">✨ Colleen Hoover</button>
+                <button class="library-filter-btn" data-filter="other">📖 Outros Livros</button>
+                <button class="library-filter-btn" data-filter="planner">📝 Meus Livros</button>
+                <button class="library-filter-btn" data-filter="read">✅ Lidos</button>
+                <button class="library-filter-btn" data-filter="reading">📖 Lendo</button>
+                <button class="library-filter-btn" data-filter="want">📌 Quero Ler</button>
+                <button class="library-filter-btn" data-filter="favorite">⭐ Favoritos</button>
+            </div>
+            
             <div class="books-container">
-                <div class="colleen-hoover-section">
+                <!-- Estante Unificada -->
+                <div id="unified-library-shelf" class="books-3d-shelf unified-shelf"></div>
+                
+                <div class="colleen-hoover-section" id="colleen-section" style="display: none;">
                     <h3 class="author-title">✨ Colleen Hoover - Sua Autora Favorita ✨</h3>
                     <div id="colleen-books" class="books-3d-shelf"></div>
                 </div>
-                <div class="other-books-section">
+                <div class="other-books-section" id="other-section" style="display: none;">
                     <h3 class="author-title">Outros Livros de Romance e Suspense</h3>
                     <div id="other-books" class="books-3d-shelf"></div>
                 </div>
+                
                 <div class="books-message">
                     <p>📖 Ver você lendo é uma das coisas mais lindas que já vi. Aquela expressão de encantamento quando você está imersa em uma história, especialmente nos livros da Colleen Hoover... É mágico. A forma como você se dedica a cada página, como você se emociona com cada personagem, como você fica completamente perdida no mundo que o autor criou - isso mostra o quanto você é doce, sensível e especial. Sua paixão pela leitura é uma das coisas que mais me encanta em você. Quero ler com você em cafés aconchegantes, descobrindo novas histórias enquanto criamos a nossa própria. Você é a menina mais doce que já conheci, e ver você feliz com um livro nas mãos é ver você em seu elemento mais puro. ✨</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção Planner de Leitura Interativo -->
+    <section id="planner-section" class="section planner-section">
+        <div class="container">
+            <h2 class="section-title">📝 Meu Planner de Leitura</h2>
+            <p class="section-subtitle">Organize suas leituras, anote suas impressões e personalize com stickers</p>
+            <div class="planner-intro">
+                <p class="planner-intro-text">✨ Um presente especial para você organizar todas as suas leituras e criar memórias dos livros que você ama ✨</p>
+            </div>
+            
+            <div class="planner-container">
+                <!-- Abas do Planner -->
+                <div class="planner-tabs">
+                    <button class="planner-tab active" data-tab="books">📚 Meus Livros</button>
+                    <button class="planner-tab" data-tab="goals">🎯 Metas</button>
+                    <button class="planner-tab" data-tab="notes">📝 Anotações</button>
+                </div>
+
+                <!-- Conteúdo: Meus Livros -->
+                <div id="planner-books" class="planner-content active">
+                    <div class="planner-books-header">
+                        <h3 class="planner-content-title">Minha Biblioteca Pessoal</h3>
+                        <button class="planner-add-btn" onclick="openAddBookModal()">+ Adicionar Livro</button>
+                    </div>
+                    <div class="books-status-tabs">
+                        <button class="status-tab active" data-status="reading">📖 Lendo</button>
+                        <button class="status-tab" data-status="read">✅ Lidos</button>
+                        <button class="status-tab" data-status="want">📌 Quero Ler</button>
+                    </div>
+                    <div id="books-list" class="books-list"></div>
+                </div>
+
+                <!-- Conteúdo: Metas -->
+                <div id="planner-goals" class="planner-content">
+                    <h3 class="planner-content-title">Minhas Metas de Leitura</h3>
+                    <div class="goals-container">
+                        <div class="goal-card">
+                            <h4>📅 Meta Anual</h4>
+                            <div class="goal-input-group">
+                                <input type="number" id="yearly-goal" placeholder="Ex: 50" min="1" class="goal-input">
+                                <span class="goal-label">livros em 2025</span>
+                            </div>
+                            <div class="goal-progress">
+                                <div class="goal-progress-bar">
+                                    <div id="yearly-progress" class="goal-progress-fill"></div>
+                                </div>
+                                <span id="yearly-count" class="goal-count">0 / 0</span>
+                            </div>
+                        </div>
+                        <div class="goal-card">
+                            <h4>📖 Meta Mensal</h4>
+                            <div class="goal-input-group">
+                                <input type="number" id="monthly-goal" placeholder="Ex: 5" min="1" class="goal-input">
+                                <span class="goal-label">livros este mês</span>
+                            </div>
+                            <div class="goal-progress">
+                                <div class="goal-progress-bar">
+                                    <div id="monthly-progress" class="goal-progress-fill"></div>
+                                </div>
+                                <span id="monthly-count" class="goal-count">0 / 0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conteúdo: Anotações -->
+                <div id="planner-notes" class="planner-content">
+                    <div class="planner-notes-header">
+                        <h3 class="planner-content-title">Minhas Anotações e Resenhas</h3>
+                        <button class="planner-add-btn" onclick="openAddNoteModal()">+ Nova Anotação</button>
+                    </div>
+                    <div id="notes-list" class="notes-list"></div>
+                    
+                    <!-- Biblioteca de Stickers integrada -->
+                    <div class="stickers-in-notes">
+                        <h4 class="stickers-section-title">✨ Biblioteca de Stickers Premium</h4>
+                        <p class="stickers-instruction">Arraste os stickers para qualquer lugar do planner! 💕</p>
+                        <div class="stickers-library">
+                            <div class="sticker-category">
+                                <h4>📚 Status de Leitura</h4>
+                                <div class="stickers-grid">
+                                    <div class="sticker-item premium" draggable="true" data-sticker="reading" data-type="status">
+                                        <div class="sticker-premium-new sticker-reading-new">
+                                            <div class="sticker-icon-new">📖</div>
+                                            <div class="sticker-text-new">Lendo</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="completed" data-type="status">
+                                        <div class="sticker-premium-new sticker-completed-new">
+                                            <div class="sticker-icon-new">✅</div>
+                                            <div class="sticker-text-new">Concluído</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="favorite" data-type="status">
+                                        <div class="sticker-premium-new sticker-favorite-new">
+                                            <div class="sticker-icon-new">⭐</div>
+                                            <div class="sticker-text-new">Favorito</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="want" data-type="status">
+                                        <div class="sticker-premium-new sticker-want-new">
+                                            <div class="sticker-icon-new">📌</div>
+                                            <div class="sticker-text-new">Quero Ler</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="reread" data-type="status">
+                                        <div class="sticker-premium-new sticker-reread-new">
+                                            <div class="sticker-icon-new">🔄</div>
+                                            <div class="sticker-text-new">Relendo</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="paused" data-type="status">
+                                        <div class="sticker-premium-new sticker-paused-new">
+                                            <div class="sticker-icon-new">⏸️</div>
+                                            <div class="sticker-text-new">Pausado</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sticker-category">
+                                <h4>💭 Emoções e Reações</h4>
+                                <div class="stickers-grid">
+                                    <div class="sticker-item premium" draggable="true" data-sticker="loved" data-type="emotion">
+                                        <div class="sticker-premium-new sticker-loved-new">
+                                            <div class="sticker-icon-new">💕</div>
+                                            <div class="sticker-text-new">Amei</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="cried" data-type="emotion">
+                                        <div class="sticker-premium-new sticker-cried-new">
+                                            <div class="sticker-icon-new">😢</div>
+                                            <div class="sticker-text-new">Chorei</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="amazed" data-type="emotion">
+                                        <div class="sticker-premium-new sticker-amazed-new">
+                                            <div class="sticker-icon-new">🤯</div>
+                                            <div class="sticker-text-new">Incrível</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="sad" data-type="emotion">
+                                        <div class="sticker-premium-new sticker-sad-new">
+                                            <div class="sticker-icon-new">😔</div>
+                                            <div class="sticker-text-new">Triste</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="happy" data-type="emotion">
+                                        <div class="sticker-premium-new sticker-happy-new">
+                                            <div class="sticker-icon-new">🥰</div>
+                                            <div class="sticker-text-new">Feliz</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="shocked" data-type="emotion">
+                                        <div class="sticker-premium-new sticker-shocked-new">
+                                            <div class="sticker-icon-new">😱</div>
+                                            <div class="sticker-text-new">Chocante</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sticker-category">
+                                <h4>📖 Gêneros Literários</h4>
+                                <div class="stickers-grid">
+                                    <div class="sticker-item premium" draggable="true" data-sticker="romance" data-type="genre">
+                                        <div class="sticker-premium-new sticker-romance-new">
+                                            <div class="sticker-icon-new">💕</div>
+                                            <div class="sticker-text-new">Romance</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="suspense" data-type="genre">
+                                        <div class="sticker-premium-new sticker-suspense-new">
+                                            <div class="sticker-icon-new">🔍</div>
+                                            <div class="sticker-text-new">Suspense</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="classic" data-type="genre">
+                                        <div class="sticker-premium-new sticker-classic-new">
+                                            <div class="sticker-icon-new">📚</div>
+                                            <div class="sticker-text-new">Clássico</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="drama" data-type="genre">
+                                        <div class="sticker-premium-new sticker-drama-new">
+                                            <div class="sticker-icon-new">🎭</div>
+                                            <div class="sticker-text-new">Drama</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="fantasy" data-type="genre">
+                                        <div class="sticker-premium-new sticker-fantasy-new">
+                                            <div class="sticker-icon-new">💫</div>
+                                            <div class="sticker-text-new">Fantasia</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="thriller" data-type="genre">
+                                        <div class="sticker-premium-new sticker-thriller-new">
+                                            <div class="sticker-icon-new">⚡</div>
+                                            <div class="sticker-text-new">Thriller</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sticker-category">
+                                <h4>✨ Decoração e Elementos</h4>
+                                <div class="stickers-grid">
+                                    <div class="sticker-item premium decorative" draggable="true" data-sticker="star" data-type="decoration">
+                                        <div class="sticker-premium-new decorative sticker-star-new">
+                                            <div class="sticker-icon-large-new">⭐</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium decorative" draggable="true" data-sticker="heart" data-type="decoration">
+                                        <div class="sticker-premium-new decorative sticker-heart-new">
+                                            <div class="sticker-icon-large-new">💕</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium decorative" draggable="true" data-sticker="sparkle" data-type="decoration">
+                                        <div class="sticker-premium-new decorative sticker-sparkle-new">
+                                            <div class="sticker-icon-large-new">✨</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium decorative" draggable="true" data-sticker="bookmark" data-type="decoration">
+                                        <div class="sticker-premium-new decorative sticker-bookmark-new">
+                                            <div class="sticker-icon-large-new">🔖</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium decorative" draggable="true" data-sticker="coffee" data-type="decoration">
+                                        <div class="sticker-premium-new decorative sticker-coffee-new">
+                                            <div class="sticker-icon-large-new">☕</div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium decorative" draggable="true" data-sticker="flower" data-type="decoration">
+                                        <div class="sticker-premium-new decorative sticker-flower-new">
+                                            <div class="sticker-icon-large-new">🌸</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sticker-drop-zone">
+                            <p>Arraste stickers aqui para criar sua área personalizada</p>
+                            <div id="sticker-canvas" class="sticker-canvas"></div>
+                        </div>
+                    </div>
+                </div>
+                    
+                    <!-- Biblioteca de Stickers integrada -->
+                    <div class="stickers-in-notes">
+                        <h4 class="stickers-section-title">✨ Biblioteca de Stickers</h4>
+                        <p class="stickers-instruction">Arraste os stickers para qualquer lugar do planner! 💕</p>
+                        <div class="stickers-library">
+                            <div class="sticker-category">
+                                <h4>📚 Status de Leitura</h4>
+                                <div class="stickers-grid">
+                                    <div class="sticker-item premium" draggable="true" data-sticker="reading" data-type="status">
+                                        <div class="sticker-premium sticker-reading-premium">
+                                            <div class="sticker-icon">📖</div>
+                                            <div class="sticker-text">Lendo</div>
+                                            <div class="sticker-shine"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="completed" data-type="status">
+                                        <div class="sticker-premium sticker-completed-premium">
+                                            <div class="sticker-icon">✅</div>
+                                            <div class="sticker-text">Concluído</div>
+                                            <div class="sticker-shine"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="favorite" data-type="status">
+                                        <div class="sticker-premium sticker-favorite-premium">
+                                            <div class="sticker-icon">⭐</div>
+                                            <div class="sticker-text">Favorito</div>
+                                            <div class="sticker-shine"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="want" data-type="status">
+                                        <div class="sticker-premium sticker-want-premium">
+                                            <div class="sticker-icon">📌</div>
+                                            <div class="sticker-text">Quero Ler</div>
+                                            <div class="sticker-shine"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="reread" data-type="status">
+                                        <div class="sticker-premium sticker-reread-premium">
+                                            <div class="sticker-icon">🔄</div>
+                                            <div class="sticker-text">Relendo</div>
+                                            <div class="sticker-shine"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="paused" data-type="status">
+                                        <div class="sticker-premium sticker-paused-premium">
+                                            <div class="sticker-icon">⏸️</div>
+                                            <div class="sticker-text">Pausado</div>
+                                            <div class="sticker-shine"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sticker-category">
+                                <h4>💭 Emoções e Reações</h4>
+                                <div class="stickers-grid">
+                                    <div class="sticker-item premium" draggable="true" data-sticker="loved" data-type="emotion">
+                                        <div class="sticker-premium sticker-loved-premium">
+                                            <div class="sticker-icon">💕</div>
+                                            <div class="sticker-text">Amei</div>
+                                            <div class="sticker-shine"></div>
+                                            <div class="sticker-hearts">
+                                                <span class="mini-heart">💖</span>
+                                                <span class="mini-heart">💖</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="cried" data-type="emotion">
+                                        <div class="sticker-premium sticker-cried-premium">
+                                            <div class="sticker-icon">😢</div>
+                                            <div class="sticker-text">Chorei</div>
+                                            <div class="sticker-shine"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="amazed" data-type="emotion">
+                                        <div class="sticker-premium sticker-amazed-premium">
+                                            <div class="sticker-icon">🤯</div>
+                                            <div class="sticker-text">Incrível</div>
+                                            <div class="sticker-shine"></div>
+                                            <div class="sticker-sparkles">
+                                                <span class="sparkle">✨</span>
+                                                <span class="sparkle">✨</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="sad" data-type="emotion">
+                                        <div class="sticker-premium sticker-sad-premium">
+                                            <div class="sticker-icon">😔</div>
+                                            <div class="sticker-text">Triste</div>
+                                            <div class="sticker-shine"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="happy" data-type="emotion">
+                                        <div class="sticker-premium sticker-happy-premium">
+                                            <div class="sticker-icon">🥰</div>
+                                            <div class="sticker-text">Feliz</div>
+                                            <div class="sticker-shine"></div>
+                                            <div class="sticker-sparkles">
+                                                <span class="sparkle">✨</span>
+                                                <span class="sparkle">✨</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="shocked" data-type="emotion">
+                                        <div class="sticker-premium sticker-shocked-premium">
+                                            <div class="sticker-icon">😱</div>
+                                            <div class="sticker-text">Chocante</div>
+                                            <div class="sticker-shine"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sticker-category">
+                                <h4>📖 Gêneros Literários</h4>
+                                <div class="stickers-grid">
+                                    <div class="sticker-item premium" draggable="true" data-sticker="romance" data-type="genre">
+                                        <div class="sticker-premium sticker-romance-premium">
+                                            <div class="sticker-icon">💕</div>
+                                            <div class="sticker-text">Romance</div>
+                                            <div class="sticker-shine"></div>
+                                            <div class="sticker-border-decoration"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="suspense" data-type="genre">
+                                        <div class="sticker-premium sticker-suspense-premium">
+                                            <div class="sticker-icon">🔍</div>
+                                            <div class="sticker-text">Suspense</div>
+                                            <div class="sticker-shine"></div>
+                                            <div class="sticker-border-decoration"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="classic" data-type="genre">
+                                        <div class="sticker-premium sticker-classic-premium">
+                                            <div class="sticker-icon">📚</div>
+                                            <div class="sticker-text">Clássico</div>
+                                            <div class="sticker-shine"></div>
+                                            <div class="sticker-border-decoration"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="drama" data-type="genre">
+                                        <div class="sticker-premium sticker-drama-premium">
+                                            <div class="sticker-icon">🎭</div>
+                                            <div class="sticker-text">Drama</div>
+                                            <div class="sticker-shine"></div>
+                                            <div class="sticker-border-decoration"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="fantasy" data-type="genre">
+                                        <div class="sticker-premium sticker-fantasy-premium">
+                                            <div class="sticker-icon">💫</div>
+                                            <div class="sticker-text">Fantasia</div>
+                                            <div class="sticker-shine"></div>
+                                            <div class="sticker-border-decoration"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium" draggable="true" data-sticker="thriller" data-type="genre">
+                                        <div class="sticker-premium sticker-thriller-premium">
+                                            <div class="sticker-icon">⚡</div>
+                                            <div class="sticker-text">Thriller</div>
+                                            <div class="sticker-shine"></div>
+                                            <div class="sticker-border-decoration"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sticker-category">
+                                <h4>✨ Decoração e Elementos</h4>
+                                <div class="stickers-grid">
+                                    <div class="sticker-item premium decorative" draggable="true" data-sticker="star" data-type="decoration">
+                                        <div class="sticker-premium sticker-star-premium">
+                                            <div class="sticker-icon-large">⭐</div>
+                                            <div class="sticker-shine"></div>
+                                            <div class="sticker-glow"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium decorative" draggable="true" data-sticker="heart" data-type="decoration">
+                                        <div class="sticker-premium sticker-heart-premium">
+                                            <div class="sticker-icon-large">💕</div>
+                                            <div class="sticker-shine"></div>
+                                            <div class="sticker-glow"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium decorative" draggable="true" data-sticker="sparkle" data-type="decoration">
+                                        <div class="sticker-premium sticker-sparkle-premium">
+                                            <div class="sticker-icon-large">✨</div>
+                                            <div class="sticker-shine"></div>
+                                            <div class="sticker-glow"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium decorative" draggable="true" data-sticker="bookmark" data-type="decoration">
+                                        <div class="sticker-premium sticker-bookmark-premium">
+                                            <div class="sticker-icon-large">🔖</div>
+                                            <div class="sticker-shine"></div>
+                                            <div class="sticker-glow"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium decorative" draggable="true" data-sticker="coffee" data-type="decoration">
+                                        <div class="sticker-premium sticker-coffee-premium">
+                                            <div class="sticker-icon-large">☕</div>
+                                            <div class="sticker-shine"></div>
+                                            <div class="sticker-glow"></div>
+                                        </div>
+                                    </div>
+                                    <div class="sticker-item premium decorative" draggable="true" data-sticker="flower" data-type="decoration">
+                                        <div class="sticker-premium sticker-flower-premium">
+                                            <div class="sticker-icon-large">🌸</div>
+                                            <div class="sticker-shine"></div>
+                                            <div class="sticker-glow"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sticker-drop-zone">
+                            <p>Arraste stickers aqui para criar sua área personalizada</p>
+                            <div id="sticker-canvas" class="sticker-canvas"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conteúdo: Stickers (Simplificado - redireciona para Anotações) -->
+                <div id="planner-stickers" class="planner-content">
+                    <div class="stickers-redirect">
+                        <div class="redirect-icon">✨</div>
+                        <h3 class="planner-content-title">Biblioteca de Stickers</h3>
+                        <p class="redirect-message">Os stickers foram movidos para a seção de <strong>Anotações</strong> para facilitar o acesso!</p>
+                        <button class="planner-add-btn" onclick="switchToNotes()">Ir para Anotações</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Adicionar Livro -->
+    <div id="add-book-modal" class="planner-modal">
+        <div class="planner-modal-content">
+            <span class="close-planner-modal" onclick="closeAddBookModal()">&times;</span>
+            <h3 class="planner-modal-title">Adicionar Novo Livro</h3>
+            <form id="add-book-form" class="planner-form">
+                <div class="form-group">
+                    <label>Título do Livro</label>
+                    <input type="text" id="book-title" required placeholder="Ex: It Ends With Us">
+                </div>
+                <div class="form-group">
+                    <label>Autor(a)</label>
+                    <input type="text" id="book-author" required placeholder="Ex: Colleen Hoover">
+                </div>
+                <div class="form-group">
+                    <label>Capa do Livro</label>
+                    <div class="book-cover-options">
+                        <div class="cover-option" data-cover="lavender">
+                            <div class="cover-preview cover-lavender"></div>
+                            <span>Lavanda</span>
+                        </div>
+                        <div class="cover-option" data-cover="rose">
+                            <div class="cover-preview cover-rose"></div>
+                            <span>Rosa</span>
+                        </div>
+                        <div class="cover-option" data-cover="peach">
+                            <div class="cover-preview cover-peach"></div>
+                            <span>Pêssego</span>
+                        </div>
+                        <div class="cover-option" data-cover="mint">
+                            <div class="cover-preview cover-mint"></div>
+                            <span>Menta</span>
+                        </div>
+                        <div class="cover-option" data-cover="coral">
+                            <div class="cover-preview cover-coral"></div>
+                            <span>Coral</span>
+                        </div>
+                        <div class="cover-option" data-cover="sky">
+                            <div class="cover-preview cover-sky"></div>
+                            <span>Céu</span>
+                        </div>
+                        <div class="cover-option" data-cover="sunset">
+                            <div class="cover-preview cover-sunset"></div>
+                            <span>Pôr do Sol</span>
+                        </div>
+                        <div class="cover-option" data-cover="ocean">
+                            <div class="cover-preview cover-ocean"></div>
+                            <span>Oceano</span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="book-cover" value="lavender">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="book-status" required>
+                        <option value="reading">📖 Lendo</option>
+                        <option value="read">✅ Lido</option>
+                        <option value="want">📌 Quero Ler</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Stickers/Tags</label>
+                    <p class="form-hint">Selecione stickers para categorizar seu livro</p>
+                    <div class="book-stickers-selector">
+                        <div class="sticker-select-group">
+                            <span class="select-group-label">Gêneros:</span>
+                            <div class="sticker-select-options">
+                                <label class="sticker-select-label">
+                                    <input type="checkbox" value="romance" class="book-sticker-check">
+                                    <span class="sticker-badge-small sticker-romance">💕 Romance</span>
+                                </label>
+                                <label class="sticker-select-label">
+                                    <input type="checkbox" value="suspense" class="book-sticker-check">
+                                    <span class="sticker-badge-small sticker-suspense">🔍 Suspense</span>
+                                </label>
+                                <label class="sticker-select-label">
+                                    <input type="checkbox" value="classic" class="book-sticker-check">
+                                    <span class="sticker-badge-small sticker-classic">📚 Clássico</span>
+                                </label>
+                                <label class="sticker-select-label">
+                                    <input type="checkbox" value="drama" class="book-sticker-check">
+                                    <span class="sticker-badge-small sticker-drama">🎭 Drama</span>
+                                </label>
+                                <label class="sticker-select-label">
+                                    <input type="checkbox" value="fantasy" class="book-sticker-check">
+                                    <span class="sticker-badge-small sticker-fantasy">💫 Fantasia</span>
+                                </label>
+                                <label class="sticker-select-label">
+                                    <input type="checkbox" value="thriller" class="book-sticker-check">
+                                    <span class="sticker-badge-small sticker-thriller">⚡ Thriller</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="sticker-select-group">
+                            <span class="select-group-label">Emoções:</span>
+                            <div class="sticker-select-options">
+                                <label class="sticker-select-label">
+                                    <input type="checkbox" value="loved" class="book-sticker-check">
+                                    <span class="sticker-badge-small sticker-loved">💕 Amei</span>
+                                </label>
+                                <label class="sticker-select-label">
+                                    <input type="checkbox" value="favorite" class="book-sticker-check">
+                                    <span class="sticker-badge-small sticker-favorite">⭐ Favorito</span>
+                                </label>
+                                <label class="sticker-select-label">
+                                    <input type="checkbox" value="amazed" class="book-sticker-check">
+                                    <span class="sticker-badge-small sticker-amazed">🤯 Incrível</span>
+                                </label>
+                                <label class="sticker-select-label">
+                                    <input type="checkbox" value="cried" class="book-sticker-check">
+                                    <span class="sticker-badge-small sticker-cried">😢 Chorei</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Data de Início (opcional)</label>
+                    <input type="date" id="book-start-date">
+                </div>
+                <div class="form-group">
+                    <label>Data de Término (opcional)</label>
+                    <input type="date" id="book-end-date">
+                </div>
+                <div class="form-group">
+                    <label>Nota (1-5 estrelas)</label>
+                    <div class="rating-stars">
+                        <span class="star" data-rating="1">⭐</span>
+                        <span class="star" data-rating="2">⭐</span>
+                        <span class="star" data-rating="3">⭐</span>
+                        <span class="star" data-rating="4">⭐</span>
+                        <span class="star" data-rating="5">⭐</span>
+                    </div>
+                    <input type="hidden" id="book-rating" value="0">
+                </div>
+                <div class="form-group">
+                    <label>Minhas Anotações</label>
+                    <textarea id="book-notes" rows="4" placeholder="O que você achou deste livro?"></textarea>
+                </div>
+                <button type="submit" class="planner-submit-btn">Adicionar Livro</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Adicionar Anotação -->
+    <div id="add-note-modal" class="planner-modal">
+        <div class="planner-modal-content">
+            <span class="close-planner-modal" onclick="closeAddNoteModal()">&times;</span>
+            <h3 class="planner-modal-title">Nova Anotação</h3>
+            <form id="add-note-form" class="planner-form">
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" id="note-title" required placeholder="Ex: Citações favoritas">
+                </div>
+                <div class="form-group">
+                    <label>Conteúdo</label>
+                    <textarea id="note-content" rows="6" required placeholder="Escreva suas anotações aqui..."></textarea>
+                </div>
+                <button type="submit" class="planner-submit-btn">Salvar Anotação</button>
+            </form>
+        </div>
+    </div>
             </div>
         </div>
     </section>
@@ -192,6 +852,7 @@
 
     <script src="data.js"></script>
     <script src="gallery.js"></script>
+    <script src="planner.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

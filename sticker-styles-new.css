@@ -1,0 +1,198 @@
+/* Novos Stickers Premium - Design Completamente Renovado */
+
+.sticker-premium-new {
+    width: 100px;
+    height: 100px;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 
+        0 8px 20px rgba(0, 0, 0, 0.15),
+        inset 0 2px 5px rgba(255, 255, 255, 0.3),
+        inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    cursor: grab;
+    overflow: hidden;
+}
+
+.sticker-premium-new::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 50%);
+    border-radius: 25px;
+    pointer-events: none;
+}
+
+.sticker-premium-new::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    animation: shimmer 3s infinite;
+    pointer-events: none;
+}
+
+@keyframes shimmer {
+    0% { transform: translate(-100%, -100%) rotate(0deg); }
+    100% { transform: translate(100%, 100%) rotate(360deg); }
+}
+
+.sticker-icon-new {
+    font-size: 2rem;
+    margin-bottom: 5px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    z-index: 1;
+}
+
+.sticker-text-new {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.sticker-icon-large-new {
+    font-size: 3.5rem;
+    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
+    z-index: 1;
+}
+
+/* Stickers Decorativos (maiores) */
+.sticker-premium-new.decorative {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+}
+
+/* Cores Específicas - Status */
+.sticker-reading-new {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #5a4fcf 100%);
+}
+
+.sticker-completed-new {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 50%, #06d6a0 100%);
+}
+
+.sticker-favorite-new {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #ffd93d 100%);
+}
+
+.sticker-want-new {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 50%, #ffd93d 100%);
+}
+
+.sticker-reread-new {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #ffecd2 100%);
+    color: #5a4fcf;
+}
+
+.sticker-reread-new .sticker-text-new {
+    color: #5a4fcf;
+}
+
+.sticker-paused-new {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff8a80 100%);
+}
+
+/* Cores - Emoções */
+.sticker-loved-new {
+    background: linear-gradient(135deg, #ff6b9d 0%, #c44569 50%, #ff4757 100%);
+}
+
+.sticker-cried-new {
+    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 50%, #6c5ce7 100%);
+}
+
+.sticker-amazed-new {
+    background: linear-gradient(135deg, #fdcb6e 0%, #e17055 50%, #f39c12 100%);
+}
+
+.sticker-sad-new {
+    background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 50%, #5f27cd 100%);
+}
+
+.sticker-happy-new {
+    background: linear-gradient(135deg, #00b894 0%, #00cec9 50%, #55efc4 100%);
+}
+
+.sticker-shocked-new {
+    background: linear-gradient(135deg, #fd79a8 0%, #e84393 50%, #d63031 100%);
+}
+
+/* Cores - Gêneros */
+.sticker-romance-new {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffb3ba 100%);
+}
+
+.sticker-suspense-new {
+    background: linear-gradient(135deg, #434343 0%, #000000 50%, #2c2c2c 100%);
+}
+
+.sticker-classic-new {
+    background: linear-gradient(135deg, #8e9aaf 0%, #cbc0d3 50%, #efd3d7 100%);
+}
+
+.sticker-drama-new {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff8a80 100%);
+}
+
+.sticker-fantasy-new {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #ffecd2 100%);
+}
+
+.sticker-thriller-new {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%);
+}
+
+/* Cores - Decoração */
+.sticker-star-new {
+    background: linear-gradient(135deg, #feca57 0%, #ff9ff3 50%, #ffd93d 100%);
+}
+
+.sticker-heart-new {
+    background: linear-gradient(135deg, #ff6b9d 0%, #c44569 50%, #ff4757 100%);
+}
+
+.sticker-sparkle-new {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #ffecd2 100%);
+}
+
+.sticker-bookmark-new {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #5a4fcf 100%);
+}
+
+.sticker-coffee-new {
+    background: linear-gradient(135deg, #8b4513 0%, #a0522d 50%, #654321 100%);
+}
+
+.sticker-flower-new {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffb3ba 100%);
+}
+
+/* Hover Effects */
+.sticker-item:hover .sticker-premium-new {
+    transform: translateY(-5px) scale(1.1) rotate(5deg);
+    box-shadow: 
+        0 12px 30px rgba(0, 0, 0, 0.25),
+        inset 0 2px 5px rgba(255, 255, 255, 0.4),
+        inset 0 -2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.sticker-item:active .sticker-premium-new {
+    transform: translateY(-2px) scale(1.05) rotate(2deg);
+}
+

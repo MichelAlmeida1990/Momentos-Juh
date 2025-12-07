@@ -17,6 +17,16 @@ document.addEventListener('DOMContentLoaded', function() {
     initPetals();
     initHearts();
     initMusicPlayer();
+    
+    // Aguardar planner carregar para sincronizar
+    setTimeout(() => {
+        if (typeof syncPlannerBooksToLibrary === 'function') {
+            syncPlannerBooksToLibrary();
+        }
+        if (typeof renderUnifiedLibrary === 'function') {
+            renderUnifiedLibrary('all');
+        }
+    }, 500);
 });
 
 // Efeito Typewriter na dedicatória
@@ -178,41 +188,288 @@ function initCoffeeSpots() {
 
 // Inicializar Livros - Design 3D Criativo
 function initBooks() {
-    // Livros da Colleen Hoover
-    const colleenContainer = document.getElementById('colleen-books');
-    if (colleenContainer) {
-        siteData.colleenHooverBooks.forEach((book, index) => {
-            const bookItem = document.createElement('div');
-            bookItem.className = 'book-3d-item';
-            bookItem.style.setProperty('--book-color', book.color);
-            bookItem.style.animationDelay = `${index * 0.1}s`;
-            bookItem.innerHTML = `
-                <div class="book-3d-cover" onclick="openBookModal(${index}, 'colleen')">
-                    <div class="book-3d-spine">${book.title}</div>
-                    <div class="book-3d-pages"></div>
-                </div>
-            `;
-            colleenContainer.appendChild(bookItem);
+    // Renderizar todos os livros na estante unificada
+    renderUnifiedLibrary('all');
+    initLibraryFiltersUnified();
+}
+
+// Renderizar Biblioteca Unificada
+function renderUnifiedLibrary(filter = 'all') {
+    const unifiedShelf = document.getElementById('unified-library-shelf');
+    const colleenSection = document.getElementById('colleen-section');
+    const otherSection = document.getElementById('other-section');
+    
+    if (!unifiedShelf) return;
+    
+    unifiedShelf.innerHTML = '';
+    
+    let allBooks = [];
+    let bookIndex = 0;
+    
+    // Adicionar livros da Colleen Hoover
+    siteData.colleenHooverBooks.forEach((book, index) => {
+        allBooks.push({
+            ...book,
+            type: 'colleen',
+            originalIndex: index,
+            displayIndex: bookIndex++
         });
+    });
+    
+    // Adicionar outros livros
+    siteData.otherBooks.forEach((book, index) => {
+        allBooks.push({
+            ...book,
+            type: 'other',
+            originalIndex: index,
+            displayIndex: bookIndex++
+        });
+    });
+    
+    // Adicionar livros do planner (verificar se plannerData existe)
+    const plannerBooks = (typeof plannerData !== 'undefined' && plannerData.books) ? plannerData.books : [];
+    plannerBooks.forEach((book, index) => {
+        // Gerar cor baseada na capa ou título
+        const coverColors = {
+            'lavender': '#E6D5F7',
+            'rose': '#F4C2C2',
+            'peach': '#FFD9B3',
+            'mint': '#A8E6CF',
+            'coral': '#FF8C94',
+            'sky': '#87CEEB',
+            'sunset': '#FF9A8B',
+            'ocean': '#667eea'
+        };
+        
+        allBooks.push({
+            title: book.title,
+            author: book.author,
+            synopsis: book.notes || `Livro adicionado por ${book.author}`,
+            color: coverColors[book.cover] || coverColors.lavender,
+            type: 'planner',
+            plannerData: book,
+            displayIndex: bookIndex++
+        });
+    });
+    
+    // Aplicar filtros
+    let filteredBooks = allBooks;
+    if (filter === 'colleen') {
+        filteredBooks = allBooks.filter(b => b.type === 'colleen');
+        if (colleenSection) colleenSection.style.display = 'block';
+        if (otherSection) otherSection.style.display = 'none';
+    } else if (filter === 'other') {
+        filteredBooks = allBooks.filter(b => b.type === 'other');
+        if (colleenSection) colleenSection.style.display = 'none';
+        if (otherSection) otherSection.style.display = 'block';
+    } else if (filter === 'planner') {
+        filteredBooks = allBooks.filter(b => b.type === 'planner');
+        if (colleenSection) colleenSection.style.display = 'none';
+        if (otherSection) otherSection.style.display = 'none';
+    } else if (filter === 'read') {
+        filteredBooks = allBooks.filter(b => {
+            if (b.type === 'planner' && b.plannerData) return b.plannerData.status === 'read';
+            return false; // Livros fixos não têm status
+        });
+        if (colleenSection) colleenSection.style.display = 'none';
+        if (otherSection) otherSection.style.display = 'none';
+    } else if (filter === 'reading') {
+        filteredBooks = allBooks.filter(b => {
+            if (b.type === 'planner' && b.plannerData) return b.plannerData.status === 'reading';
+            return false;
+        });
+        if (colleenSection) colleenSection.style.display = 'none';
+        if (otherSection) otherSection.style.display = 'none';
+    } else if (filter === 'want') {
+        filteredBooks = allBooks.filter(b => {
+            if (b.type === 'planner' && b.plannerData) return b.plannerData.status === 'want';
+            return false;
+        });
+        if (colleenSection) colleenSection.style.display = 'none';
+        if (otherSection) otherSection.style.display = 'none';
+    } else if (filter === 'favorite') {
+        filteredBooks = allBooks.filter(b => {
+            if (b.type === 'planner' && b.plannerData) {
+                return b.plannerData.stickers && b.plannerData.stickers.includes('favorite');
+            }
+            return false;
+        });
+        if (colleenSection) colleenSection.style.display = 'none';
+        if (otherSection) otherSection.style.display = 'none';
+    } else {
+        // Todos
+        if (colleenSection) colleenSection.style.display = 'none';
+        if (otherSection) otherSection.style.display = 'none';
     }
     
-    // Outros livros
-    const otherContainer = document.getElementById('other-books');
-    if (otherContainer) {
-        siteData.otherBooks.forEach((book, index) => {
-            const bookItem = document.createElement('div');
-            bookItem.className = 'book-3d-item';
-            bookItem.style.setProperty('--book-color', book.color);
-            bookItem.style.animationDelay = `${index * 0.1}s`;
+    // Renderizar livros filtrados
+    filteredBooks.forEach((book, index) => {
+        const bookItem = document.createElement('div');
+        bookItem.className = 'book-3d-item';
+        bookItem.style.setProperty('--book-color', book.color);
+        bookItem.style.animationDelay = `${index * 0.1}s`;
+        
+        // Truncar título se muito longo
+        const displayTitle = book.title.length > 20 ? book.title.substring(0, 17) + '...' : book.title;
+        
+        if (book.type === 'planner') {
+            // Livro do planner - abrir modal com dados do planner
             bookItem.innerHTML = `
-                <div class="book-3d-cover" onclick="openBookModal(${index}, 'other')">
-                    <div class="book-3d-spine">${book.title}</div>
+                <div class="book-3d-cover" onclick="openPlannerBookModal(${book.displayIndex})">
+                    <div class="book-3d-spine">${displayTitle}</div>
                     <div class="book-3d-pages"></div>
                 </div>
             `;
-            otherContainer.appendChild(bookItem);
-        });
+        } else {
+            // Livro fixo - usar função original
+            bookItem.innerHTML = `
+                <div class="book-3d-cover" onclick="openBookModal(${book.originalIndex}, '${book.type}')">
+                    <div class="book-3d-spine">${displayTitle}</div>
+                    <div class="book-3d-pages"></div>
+                </div>
+            `;
+        }
+        
+        unifiedShelf.appendChild(bookItem);
+    });
+    
+    // Manter estantes originais para compatibilidade
+    if (filter === 'colleen' || filter === 'other') {
+        const colleenContainer = document.getElementById('colleen-books');
+        const otherContainer = document.getElementById('other-books');
+        
+        if (filter === 'colleen' && colleenContainer) {
+            colleenContainer.innerHTML = '';
+            siteData.colleenHooverBooks.forEach((book, index) => {
+                const bookItem = document.createElement('div');
+                bookItem.className = 'book-3d-item';
+                bookItem.style.setProperty('--book-color', book.color);
+                bookItem.style.animationDelay = `${index * 0.1}s`;
+                bookItem.innerHTML = `
+                    <div class="book-3d-cover" onclick="openBookModal(${index}, 'colleen')">
+                        <div class="book-3d-spine">${book.title}</div>
+                        <div class="book-3d-pages"></div>
+                    </div>
+                `;
+                colleenContainer.appendChild(bookItem);
+            });
+        }
+        
+        if (filter === 'other' && otherContainer) {
+            otherContainer.innerHTML = '';
+            siteData.otherBooks.forEach((book, index) => {
+                const bookItem = document.createElement('div');
+                bookItem.className = 'book-3d-item';
+                bookItem.style.setProperty('--book-color', book.color);
+                bookItem.style.animationDelay = `${index * 0.1}s`;
+                bookItem.innerHTML = `
+                    <div class="book-3d-cover" onclick="openBookModal(${index}, 'other')">
+                        <div class="book-3d-spine">${book.title}</div>
+                        <div class="book-3d-pages"></div>
+                    </div>
+                `;
+                otherContainer.appendChild(bookItem);
+            });
+        }
     }
+}
+
+// Abrir modal de livro do planner
+function openPlannerBookModal(displayIndex) {
+    // Encontrar o livro pelo displayIndex
+    let currentIndex = 0;
+    let targetBook = null;
+    
+    siteData.colleenHooverBooks.forEach(() => currentIndex++);
+    siteData.otherBooks.forEach(() => currentIndex++);
+    
+    // Verificar se plannerData existe (tentar window.plannerData primeiro)
+    const plannerBooks = (typeof window.plannerData !== 'undefined' && window.plannerData.books) 
+        ? window.plannerData.books 
+        : (typeof plannerData !== 'undefined' && plannerData.books) 
+            ? plannerData.books 
+            : [];
+    
+    plannerBooks.forEach((book, index) => {
+        if (currentIndex === displayIndex) {
+            targetBook = { ...book, plannerIndex: index };
+        }
+        currentIndex++;
+    });
+    
+    if (!targetBook) return;
+    
+    const modal = document.getElementById('book-modal');
+    const modalBody = document.getElementById('book-modal-body');
+    
+    if (modal && modalBody) {
+        const coverColors = {
+            'lavender': '#E6D5F7',
+            'rose': '#F4C2C2',
+            'peach': '#FFD9B3',
+            'mint': '#A8E6CF',
+            'coral': '#FF8C94',
+            'sky': '#87CEEB',
+            'sunset': '#FF9A8B',
+            'ocean': '#667eea'
+        };
+        
+        const coverColor = coverColors[targetBook.cover] || coverColors.lavender;
+        const ratingStars = '⭐'.repeat(targetBook.rating || 0);
+        let stickersHTML = '';
+        if (targetBook.stickers && targetBook.stickers.length > 0) {
+            const stickerConfigs = targetBook.stickers.map(sticker => {
+                // Tentar usar getStickerConfig se disponível, senão criar config básico
+                if (typeof getStickerConfig === 'function') {
+                    return getStickerConfig(sticker);
+                }
+                // Fallback básico
+                return { class: 'sticker-reading', label: sticker };
+            }).filter(c => c);
+            
+            stickersHTML = `<div class="book-modal-stickers">${stickerConfigs.map(config => 
+                `<span class="sticker-badge-small ${config.class}">${config.label}</span>`
+            ).join('')}</div>`;
+        }
+        
+        modalBody.innerHTML = `
+            <div class="book-modal-cover" style="background: linear-gradient(135deg, ${coverColor}, ${adjustColor(coverColor, -30)})">
+                <h3 class="book-modal-title">${targetBook.title}</h3>
+                <p class="book-modal-author">por ${targetBook.author}</p>
+            </div>
+            <div class="book-modal-content">
+                ${stickersHTML}
+                ${targetBook.rating > 0 ? `<div class="book-modal-rating">${ratingStars}</div>` : ''}
+                <div class="book-modal-dates">
+                    ${targetBook.startDate ? `<p>📅 Início: ${new Date(targetBook.startDate).toLocaleDateString('pt-BR')}</p>` : ''}
+                    ${targetBook.endDate ? `<p>✅ Fim: ${new Date(targetBook.endDate).toLocaleDateString('pt-BR')}</p>` : ''}
+                </div>
+                ${targetBook.notes ? `
+                    <h4 class="book-modal-synopsis-title">Minhas Anotações</h4>
+                    <p class="book-modal-synopsis">${targetBook.notes}</p>
+                ` : ''}
+            </div>
+        `;
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// Inicializar filtros unificados
+function initLibraryFiltersUnified() {
+    const filterButtons = document.querySelectorAll('.library-filter-btn');
+    
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remover active de todos
+            filterButtons.forEach(b => b.classList.remove('active'));
+            // Adicionar active no clicado
+            this.classList.add('active');
+            
+            const filter = this.getAttribute('data-filter');
+            renderUnifiedLibrary(filter);
+        });
+    });
 }
 
 // Abrir modal do livro
