@@ -407,14 +407,18 @@ body {
     gap: 40px;
     margin-top: 40px;
     perspective: 1000px;
+    justify-items: center;
+    align-items: center;
 }
 
 .letter-envelope {
     position: relative;
     width: 100%;
+    max-width: 350px;
     height: 300px;
     cursor: pointer;
     animation: fadeInUp 0.6s ease-out both;
+    margin: 0 auto;
 }
 
 .envelope-front {
@@ -820,6 +824,9 @@ body {
     height: 500px;
     margin: 0 auto;
     transform-origin: center center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .carousel-photo {
@@ -830,8 +837,11 @@ body {
     left: 50%;
     margin-left: -75px;
     margin-top: -75px;
-    transform-origin: 250px 0;
+    transform-origin: center center;
     animation: rotateCarousel 30s linear infinite;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Delays calculados dinamicamente no JavaScript */
@@ -845,12 +855,28 @@ body {
     }
 }
 
+/* Ajuste para garantir que as fotos fiquem retas */
 .carousel-photo-wrapper {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
     width: 100%;
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
+}
+
+/* Garantir que as imagens fiquem retas */
+.carousel-image {
+    transform: rotate(0deg) !important;
+    image-orientation: from-image;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    display: block;
 }
 
 .carousel-photo-wrapper:hover {
@@ -1338,7 +1364,108 @@ body {
     color: var(--color-text-light);
 }
 
-/* Responsive */
+/* Responsive - iPad */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .main-title {
+        font-size: 3.5rem;
+    }
+    
+    .subtitle {
+        font-size: 1.6rem;
+    }
+    
+    .section-title {
+        font-size: 2.8rem;
+    }
+    
+    .carousel-container {
+        height: 550px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .photo-carousel {
+        width: 450px;
+        height: 450px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .carousel-photo {
+        width: 130px;
+        height: 130px;
+        margin-left: -65px;
+        margin-top: -65px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    @keyframes rotateCarousel {
+        from {
+            transform: rotate(0deg) translateX(225px) rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg) translateX(225px) rotate(-360deg);
+        }
+    }
+    
+    .carousel-photo-wrapper {
+        transform: rotate(0deg);
+    }
+    
+    .eiffel-tower {
+        font-size: 6.5rem;
+    }
+    
+    .tower-text {
+        font-size: 1.6rem;
+    }
+    
+    .letters-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 35px;
+        justify-items: center;
+        align-items: center;
+    }
+    
+    .letter-envelope {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+    
+    .envelope-front,
+    .envelope-back {
+        margin: 0 auto;
+    }
+    
+    .dreams-grid,
+    .coffee-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .books-3d-shelf {
+        gap: 18px;
+        padding: 35px 30px;
+    }
+    
+    .book-3d-item {
+        width: 70px;
+        height: 200px;
+    }
+    
+    .dedication-text {
+        font-size: 1.1rem;
+    }
+    
+    .container {
+        padding: 0 40px;
+    }
+}
+
+/* Responsive - Mobile */
 @media (max-width: 768px) {
     .main-title {
         font-size: 3rem;
@@ -1359,6 +1486,19 @@ body {
     .letters-grid {
         grid-template-columns: 1fr;
         gap: 30px;
+        justify-items: center;
+        align-items: center;
+    }
+    
+    .letter-envelope {
+        max-width: 100%;
+        width: 100%;
+        margin: 0 auto;
+    }
+    
+    .envelope-front,
+    .envelope-back {
+        margin: 0 auto;
     }
     
     .dreams-grid,
@@ -1368,17 +1508,44 @@ body {
     
     .carousel-container {
         height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .photo-carousel {
         width: 300px;
         height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .carousel-photo {
         width: 100px;
         height: 100px;
-        transform-origin: 150px 0;
+        margin-left: -50px;
+        margin-top: -50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    @keyframes rotateCarousel {
+        from {
+            transform: rotate(0deg) translateX(150px) rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg) translateX(150px) rotate(-360deg);
+        }
+    }
+    
+    .carousel-photo-wrapper {
+        transform: rotate(0deg);
+    }
+    
+    .carousel-image {
+        transform: rotate(0deg) !important;
     }
     
     .eiffel-tower {
@@ -1556,17 +1723,44 @@ body {
     
     .carousel-container {
         height: 350px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .photo-carousel {
         width: 250px;
         height: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .carousel-photo {
         width: 80px;
         height: 80px;
-        transform-origin: 125px 0;
+        margin-left: -40px;
+        margin-top: -40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    @keyframes rotateCarousel {
+        from {
+            transform: rotate(0deg) translateX(125px) rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg) translateX(125px) rotate(-360deg);
+        }
+    }
+    
+    .carousel-photo-wrapper {
+        transform: rotate(0deg);
+    }
+    
+    .carousel-image {
+        transform: rotate(0deg) !important;
     }
     
     .eiffel-tower {
