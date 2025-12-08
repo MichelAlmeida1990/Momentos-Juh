@@ -4066,6 +4066,24 @@ textarea {
         grid-template-columns: 1fr;
     }
     
+    .coffee-upload-section {
+        grid-column: 1;
+        width: 100%;
+        margin-bottom: 25px;
+        display: block !important;
+    }
+    
+    .coffee-upload-card {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 25px;
+    }
+    
+    .coffee-photos-gallery {
+        grid-column: 1;
+        width: 100%;
+    }
+    
     .carousel-container {
         height: 400px;
         display: flex;
