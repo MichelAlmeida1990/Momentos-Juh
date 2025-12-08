@@ -478,7 +478,18 @@ function savePhotoInfo(index, event) {
     };
     
     // Salvar
-    localStorage.setItem('julianaCoffeePhotos', JSON.stringify(coffeePhotos));
+    try {
+        localStorage.setItem('julianaCoffeePhotos', JSON.stringify(coffeePhotos));
+        console.log('✅ Informações da foto salvas com sucesso!');
+    } catch (e) {
+        console.error('❌ Erro ao salvar informações da foto:', e);
+        if (e.name === 'QuotaExceededError') {
+            alert('Limite de armazenamento atingido. Por favor, remova algumas fotos antigas.');
+        } else {
+            alert('Erro ao salvar informações. Tente novamente.');
+        }
+        return;
+    }
     
     // Fechar modal e recarregar
     document.querySelector('.coffee-photo-edit-modal').remove();
