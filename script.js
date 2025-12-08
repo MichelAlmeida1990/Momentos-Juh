@@ -712,6 +712,182 @@ function renderUnifiedLibrary(filter = 'all') {
     }
 }
 
+// Editar livro do planner
+function editPlannerBook(plannerBookIndex) {
+    // Fechar modal atual
+    closeBookModal();
+    
+    // Verificar se plannerData existe
+    const plannerData = (typeof window.plannerData !== 'undefined' && window.plannerData) 
+        ? window.plannerData 
+        : (typeof plannerData !== 'undefined' && plannerData) 
+            ? plannerData 
+            : null;
+    
+    if (!plannerData || !plannerData.books) {
+        alert('Erro: Não foi possível encontrar os dados do planner.');
+        return;
+    }
+    
+    if (plannerBookIndex < 0 || plannerBookIndex >= plannerData.books.length) {
+        return;
+    }
+    
+    const book = plannerData.books[plannerBookIndex];
+    
+    // Abrir modal de adicionar livro com dados preenchidos
+    if (typeof openAddBookModal === 'function') {
+        openAddBookModal();
+        
+        // Preencher formulário após um pequeno delay
+        setTimeout(() => {
+            document.getElementById('book-title').value = book.title || '';
+            document.getElementById('book-author').value = book.author || '';
+            document.getElementById('book-status').value = book.status || 'reading';
+            document.getElementById('book-cover').value = book.cover || 'lavender';
+            document.getElementById('book-rating').value = book.rating || '0';
+            document.getElementById('book-start-date').value = book.startDate || '';
+            document.getElementById('book-end-date').value = book.endDate || '';
+            document.getElementById('book-notes').value = book.notes || '';
+            
+            // Selecionar capa
+            document.querySelectorAll('.cover-option').forEach(opt => opt.classList.remove('selected'));
+            const coverOption = document.querySelector(`.cover-option[data-cover="${book.cover || 'lavender'}"]`);
+            if (coverOption) coverOption.classList.add('selected');
+            
+            // Selecionar estrelas
+            document.querySelectorAll('.star').forEach((star, index) => {
+                if (index < (book.rating || 0)) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+            
+            // Selecionar stickers
+            document.querySelectorAll('.book-sticker-check').forEach(cb => {
+                cb.checked = book.stickers && book.stickers.includes(cb.value);
+            });
+            
+            // Modificar o botão de submit para editar
+            const form = document.getElementById('add-book-form');
+            const submitBtn = form.querySelector('button[type="submit"]');
+            submitBtn.textContent = '💾 Salvar Alterações';
+            submitBtn.setAttribute('data-edit-index', plannerBookIndex);
+            
+            // Remover listener antigo e adicionar novo para edição
+            const newForm = form.cloneNode(true);
+            form.parentNode.replaceChild(newForm, form);
+            
+            newForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Coletar dados
+                const selectedStickers = Array.from(document.querySelectorAll('.book-sticker-check:checked'))
+                    .map(cb => cb.value);
+                
+                const editedBook = {
+                    id: book.id,
+                    title: document.getElementById('book-title').value,
+                    author: document.getElementById('book-author').value,
+                    cover: document.getElementById('book-cover').value || 'lavender',
+                    status: document.getElementById('book-status').value,
+                    stickers: selectedStickers,
+                    startDate: document.getElementById('book-start-date').value || null,
+                    endDate: document.getElementById('book-end-date').value || null,
+                    rating: parseInt(document.getElementById('book-rating').value) || 0,
+                    notes: document.getElementById('book-notes').value || ''
+                };
+                
+                // Atualizar livro
+                plannerData.books[plannerBookIndex] = editedBook;
+                
+                // Salvar
+                if (typeof savePlannerData === 'function') {
+                    savePlannerData();
+                } else {
+                    localStorage.setItem('julianaPlanner', JSON.stringify(plannerData));
+                }
+                
+                // Atualizar referência global
+                if (typeof window !== 'undefined') {
+                    window.plannerData = plannerData;
+                }
+                
+                // Fechar modal e recarregar
+                if (typeof closeAddBookModal === 'function') {
+                    closeAddBookModal();
+                }
+                
+                // Recarregar biblioteca
+                const activeFilter = document.querySelector('.library-filter-btn.active')?.getAttribute('data-filter') || 'all';
+                if (typeof renderUnifiedLibrary === 'function') {
+                    renderUnifiedLibrary(activeFilter);
+                }
+                
+                // Recarregar lista de livros no planner
+                if (typeof renderBooks === 'function') {
+                    const activeStatus = document.querySelector('.status-tab.active')?.getAttribute('data-status') || 'reading';
+                    renderBooks(activeStatus);
+                }
+            });
+        }, 100);
+    }
+}
+
+// Deletar livro do planner do modal
+function deletePlannerBookFromModal(plannerBookIndex) {
+    if (!confirm('Tem certeza que deseja remover este livro?')) {
+        return;
+    }
+    
+    // Verificar se plannerData existe
+    const plannerData = (typeof window.plannerData !== 'undefined' && window.plannerData) 
+        ? window.plannerData 
+        : (typeof plannerData !== 'undefined' && plannerData) 
+            ? plannerData 
+            : null;
+    
+    if (!plannerData || !plannerData.books) {
+        alert('Erro: Não foi possível encontrar os dados do planner.');
+        return;
+    }
+    
+    if (plannerBookIndex >= 0 && plannerBookIndex < plannerData.books.length) {
+        plannerData.books.splice(plannerBookIndex, 1);
+        
+        // Salvar dados
+        if (typeof savePlannerData === 'function') {
+            savePlannerData();
+        } else {
+            localStorage.setItem('julianaPlanner', JSON.stringify(plannerData));
+        }
+        
+        // Atualizar referência global
+        if (typeof window !== 'undefined') {
+            window.plannerData = plannerData;
+        }
+        
+        // Fechar modal
+        closeBookModal();
+        
+        // Recarregar biblioteca
+        const activeFilter = document.querySelector('.library-filter-btn.active')?.getAttribute('data-filter') || 'all';
+        renderUnifiedLibrary(activeFilter);
+        
+        // Recarregar lista de livros no planner
+        if (typeof renderBooks === 'function') {
+            const activeStatus = document.querySelector('.status-tab.active')?.getAttribute('data-status') || 'reading';
+            renderBooks(activeStatus);
+        }
+        
+        // Atualizar metas
+        if (typeof updateGoals === 'function') {
+            updateGoals();
+        }
+    }
+}
+
 // Deletar livro da prateleira
 function deleteBookFromShelf(plannerBookIndex, event) {
     if (event) {
@@ -817,6 +993,10 @@ function openPlannerBookModal(displayIndex) {
             <div class="book-modal-cover" style="background: linear-gradient(135deg, ${coverColor}, ${adjustColor(coverColor, -30)})">
                 <h3 class="book-modal-title">${targetBook.title}</h3>
                 <p class="book-modal-author">por ${targetBook.author}</p>
+                <div class="book-modal-actions">
+                    <button class="book-edit-btn" onclick="editPlannerBook(${targetBook.plannerIndex})" title="Editar livro">✏️ Editar</button>
+                    <button class="book-delete-modal-btn" onclick="deletePlannerBookFromModal(${targetBook.plannerIndex})" title="Excluir livro">🗑️ Excluir</button>
+                </div>
             </div>
             <div class="book-modal-content">
                 ${stickersHTML}

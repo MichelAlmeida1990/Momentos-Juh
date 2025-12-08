@@ -2564,6 +2564,12 @@ textarea {
 .sticker-loved-premium {
     background: linear-gradient(135deg, #ff6b9d 0%, #c44569 50%, #ff8fab 100%);
     position: relative;
+    color: #000000;
+}
+
+.sticker-loved-premium .sticker-text {
+    color: #000000 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .sticker-loved-premium::before {
@@ -2583,6 +2589,12 @@ textarea {
 .sticker-cried-premium {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #5a4fcf 100%);
     position: relative;
+    color: #000000;
+}
+
+.sticker-cried-premium .sticker-text {
+    color: #000000 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .sticker-cried-premium::before {
@@ -2600,6 +2612,12 @@ textarea {
 .sticker-amazed-premium {
     background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #ff6b9d 100%);
     position: relative;
+    color: #000000;
+}
+
+.sticker-amazed-premium .sticker-text {
+    color: #000000 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .sticker-amazed-premium::before {
@@ -2619,6 +2637,12 @@ textarea {
 .sticker-sad-premium {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 50%, #0099cc 100%);
     position: relative;
+    color: #000000;
+}
+
+.sticker-sad-premium .sticker-text {
+    color: #000000 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .sticker-sad-premium::before {
@@ -2636,6 +2660,12 @@ textarea {
 .sticker-happy-premium {
     background: linear-gradient(135deg, #fa709a 0%, #fee140 50%, #ffd93d 100%);
     position: relative;
+    color: #000000;
+}
+
+.sticker-happy-premium .sticker-text {
+    color: #000000 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .sticker-happy-premium::before {
@@ -2655,6 +2685,12 @@ textarea {
 .sticker-shocked-premium {
     background: linear-gradient(135deg, #ff6b9d 0%, #c44569 50%, #ff4757 100%);
     position: relative;
+    color: #000000;
+}
+
+.sticker-shocked-premium .sticker-text {
+    color: #000000 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .sticker-shocked-premium::before {
@@ -2671,9 +2707,14 @@ textarea {
 
 .sticker-romance-premium {
     background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffb3ba 100%);
-    color: #8B4A6B;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);
+    color: #000000;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
     position: relative;
+}
+
+.sticker-romance-premium .sticker-text {
+    color: #000000 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .sticker-romance-premium::before {
@@ -2693,6 +2734,12 @@ textarea {
 .sticker-suspense-premium {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #4a3f8f 100%);
     position: relative;
+    color: #000000;
+}
+
+.sticker-suspense-premium .sticker-text {
+    color: #000000 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .sticker-suspense-premium::before {
@@ -2710,6 +2757,12 @@ textarea {
 .sticker-classic-premium {
     background: linear-gradient(135deg, #fad961 0%, #f76b1c 50%, #ffa726 100%);
     position: relative;
+    color: #000000;
+}
+
+.sticker-classic-premium .sticker-text {
+    color: #000000 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .sticker-classic-premium::before {
@@ -2729,6 +2782,12 @@ textarea {
 .sticker-drama-premium {
     background: linear-gradient(135deg, #fa709a 0%, #fee140 50%, #ff6b9d 100%);
     position: relative;
+    color: #000000;
+}
+
+.sticker-drama-premium .sticker-text {
+    color: #000000 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .sticker-drama-premium::before {
@@ -2746,6 +2805,12 @@ textarea {
 .sticker-fantasy-premium {
     background: linear-gradient(135deg, #30cfd0 0%, #330867 50%, #5a67d8 100%);
     position: relative;
+    color: #000000;
+}
+
+.sticker-fantasy-premium .sticker-text {
+    color: #000000 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .sticker-fantasy-premium::before {
@@ -2764,9 +2829,14 @@ textarea {
 
 .sticker-thriller-premium {
     background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #c084fc 100%);
-    color: #5D4E75;
-    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+    color: #000000;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
     position: relative;
+}
+
+.sticker-thriller-premium .sticker-text {
+    color: #000000 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 .sticker-thriller-premium::before {
@@ -3749,6 +3819,49 @@ textarea {
     position: relative;
 }
 
+.book-modal-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.book-edit-btn,
+.book-delete-modal-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.book-edit-btn {
+    background: linear-gradient(135deg, rgba(230, 213, 247, 0.9), rgba(230, 213, 247, 0.7));
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.book-edit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, rgba(230, 213, 247, 1), rgba(230, 213, 247, 0.9));
+}
+
+.book-delete-modal-btn {
+    background: linear-gradient(135deg, rgba(212, 165, 165, 0.9), rgba(212, 165, 165, 0.7));
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.book-delete-modal-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, rgba(212, 165, 165, 1), rgba(212, 165, 165, 0.9));
+}
+
 .book-modal-title {
     font-family: 'Playfair Display', serif;
     font-size: 2.5rem;
@@ -4423,6 +4536,18 @@ textarea {
     
     .book-modal-content {
         padding: 30px 20px;
+    }
+    
+    .book-modal-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .book-edit-btn,
+    .book-delete-modal-btn {
+        width: 100%;
+        font-size: 0.9rem;
+        padding: 12px 20px;
     }
     
     .main-nav .container {

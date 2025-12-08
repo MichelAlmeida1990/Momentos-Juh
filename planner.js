@@ -146,6 +146,13 @@ function closeAddBookModal() {
     document.querySelectorAll('.cover-option').forEach(opt => opt.classList.remove('selected'));
     document.querySelector('.cover-option[data-cover="lavender"]').classList.add('selected');
     document.querySelectorAll('.book-sticker-check').forEach(cb => cb.checked = false);
+    
+    // Resetar botão de submit
+    const submitBtn = document.querySelector('#add-book-form button[type="submit"]');
+    if (submitBtn) {
+        submitBtn.textContent = 'Adicionar Livro';
+        submitBtn.removeAttribute('data-edit-index');
+    }
 }
 
 // Configuração de stickers
@@ -204,37 +211,78 @@ document.addEventListener('DOMContentLoaded', function() {
     // Formulário de adicionar livro
     const addBookForm = document.getElementById('add-book-form');
     if (addBookForm) {
-        addBookForm.addEventListener('submit', function(e) {
+        // Remover listeners antigos se existirem
+        const newForm = addBookForm.cloneNode(true);
+        addBookForm.parentNode.replaceChild(newForm, addBookForm);
+        
+        const form = document.getElementById('add-book-form');
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Verificar se é edição
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const editIndex = submitBtn.getAttribute('data-edit-index');
             
             // Coletar stickers selecionados
             const selectedStickers = Array.from(document.querySelectorAll('.book-sticker-check:checked'))
                 .map(cb => cb.value);
             
-            const book = {
-                id: Date.now(),
-                title: document.getElementById('book-title').value,
-                author: document.getElementById('book-author').value,
-                cover: document.getElementById('book-cover').value || 'lavender',
-                status: document.getElementById('book-status').value,
-                stickers: selectedStickers,
-                startDate: document.getElementById('book-start-date').value || null,
-                endDate: document.getElementById('book-end-date').value || null,
-                rating: parseInt(document.getElementById('book-rating').value) || 0,
-                notes: document.getElementById('book-notes').value || ''
-            };
-            
-            plannerData.books.push(book);
-            savePlannerData();
-            renderBooks(book.status);
-            closeAddBookModal();
-            
-            // Atualizar metas
-            updateGoals();
-            
-            // Sincronizar com a biblioteca unificada
-            if (typeof renderUnifiedLibrary === 'function') {
-                renderUnifiedLibrary('all');
+            if (editIndex !== null && editIndex !== undefined) {
+                // É edição
+                const bookIndex = parseInt(editIndex);
+                if (bookIndex >= 0 && bookIndex < plannerData.books.length) {
+                    const existingBook = plannerData.books[bookIndex];
+                    plannerData.books[bookIndex] = {
+                        id: existingBook.id,
+                        title: document.getElementById('book-title').value,
+                        author: document.getElementById('book-author').value,
+                        cover: document.getElementById('book-cover').value || 'lavender',
+                        status: document.getElementById('book-status').value,
+                        stickers: selectedStickers,
+                        startDate: document.getElementById('book-start-date').value || null,
+                        endDate: document.getElementById('book-end-date').value || null,
+                        rating: parseInt(document.getElementById('book-rating').value) || 0,
+                        notes: document.getElementById('book-notes').value || ''
+                    };
+                    
+                    savePlannerData();
+                    const activeStatus = document.querySelector('.status-tab.active')?.getAttribute('data-status') || 'reading';
+                    renderBooks(activeStatus);
+                    closeAddBookModal();
+                    updateGoals();
+                    
+                    // Sincronizar com a biblioteca unificada
+                    if (typeof renderUnifiedLibrary === 'function') {
+                        const activeFilter = document.querySelector('.library-filter-btn.active')?.getAttribute('data-filter') || 'all';
+                        renderUnifiedLibrary(activeFilter);
+                    }
+                }
+            } else {
+                // É novo livro
+                const book = {
+                    id: Date.now(),
+                    title: document.getElementById('book-title').value,
+                    author: document.getElementById('book-author').value,
+                    cover: document.getElementById('book-cover').value || 'lavender',
+                    status: document.getElementById('book-status').value,
+                    stickers: selectedStickers,
+                    startDate: document.getElementById('book-start-date').value || null,
+                    endDate: document.getElementById('book-end-date').value || null,
+                    rating: parseInt(document.getElementById('book-rating').value) || 0,
+                    notes: document.getElementById('book-notes').value || ''
+                };
+                
+                plannerData.books.push(book);
+                savePlannerData();
+                renderBooks(book.status);
+                closeAddBookModal();
+                updateGoals();
+                
+                // Sincronizar com a biblioteca unificada
+                if (typeof renderUnifiedLibrary === 'function') {
+                    const activeFilter = document.querySelector('.library-filter-btn.active')?.getAttribute('data-filter') || 'all';
+                    renderUnifiedLibrary(activeFilter);
+                }
             }
         });
     }
