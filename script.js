@@ -173,6 +173,66 @@ function initCoffeeSpots() {
     const container = document.getElementById('coffee-spots');
     if (!container) return;
     
+    // Limpar container primeiro
+    container.innerHTML = '';
+    
+    // Carregar fotos salvas
+    let coffeePhotos = [];
+    try {
+        const saved = localStorage.getItem('julianaCoffeePhotos');
+        if (saved) {
+            coffeePhotos = JSON.parse(saved);
+        }
+    } catch (e) {
+        console.error('Erro ao carregar fotos:', e);
+    }
+    
+    // Adicionar botão de upload no topo
+    const uploadSection = document.createElement('div');
+    uploadSection.className = 'coffee-upload-section';
+    uploadSection.innerHTML = `
+        <div class="coffee-upload-card">
+            <div class="upload-icon">📸</div>
+            <h3 class="upload-title">Adicionar Momento de Café</h3>
+            <p class="upload-description">Compartilhe seus momentos especiais tomando café</p>
+            <label for="coffee-photo-upload" class="upload-btn">
+                <input type="file" id="coffee-photo-upload" accept="image/*" multiple style="display: none;" onchange="handleCoffeePhotoUpload(event)">
+                <span>📷 Escolher Fotos</span>
+            </label>
+        </div>
+    `;
+    container.appendChild(uploadSection);
+    
+    // Renderizar galeria de fotos
+    if (coffeePhotos.length > 0) {
+        const gallerySection = document.createElement('div');
+        gallerySection.className = 'coffee-photos-gallery';
+        gallerySection.innerHTML = '<h3 class="gallery-title">✨ Nossos Momentos de Café ✨</h3>';
+        
+        const galleryGrid = document.createElement('div');
+        galleryGrid.className = 'coffee-photos-grid';
+        
+        coffeePhotos.forEach((photo, index) => {
+            const photoCard = document.createElement('div');
+            photoCard.className = 'coffee-photo-card';
+            // Escapar aspas na URL para evitar problemas
+            const safeUrl = photo.url.replace(/'/g, "\\'");
+            photoCard.innerHTML = `
+                <div class="photo-wrapper">
+                    <img src="${photo.url}" alt="Momento de café" class="coffee-photo-img" onclick="openCoffeePhotoModal('${safeUrl}')">
+                    <button class="photo-delete-btn" onclick="deleteCoffeePhoto(${index})" title="Remover foto">×</button>
+                </div>
+                ${photo.caption ? `<p class="photo-caption">${photo.caption}</p>` : ''}
+                <p class="photo-date">${photo.date || 'Sem data'}</p>
+            `;
+            galleryGrid.appendChild(photoCard);
+        });
+        
+        gallerySection.appendChild(galleryGrid);
+        container.appendChild(gallerySection);
+    }
+    
+    // Renderizar cards de cafés
     siteData.coffeeSpots.forEach(spot => {
         const card = document.createElement('div');
         card.className = 'coffee-card';
@@ -183,6 +243,92 @@ function initCoffeeSpots() {
             <p class="coffee-memory">"${spot.memory}"</p>
         `;
         container.appendChild(card);
+    });
+}
+
+// Processar upload de fotos
+function handleCoffeePhotoUpload(event) {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+    
+    let coffeePhotos = [];
+    try {
+        const saved = localStorage.getItem('julianaCoffeePhotos');
+        if (saved) {
+            coffeePhotos = JSON.parse(saved);
+        }
+    } catch (e) {
+        console.error('Erro ao carregar fotos:', e);
+    }
+    
+    Array.from(files).forEach(file => {
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const photoData = {
+                    url: e.target.result,
+                    date: new Date().toLocaleDateString('pt-BR'),
+                    caption: '',
+                    timestamp: Date.now()
+                };
+                coffeePhotos.push(photoData);
+                
+                // Salvar no localStorage
+                try {
+                    localStorage.setItem('julianaCoffeePhotos', JSON.stringify(coffeePhotos));
+                } catch (err) {
+                    if (err.name === 'QuotaExceededError') {
+                        alert('Limite de armazenamento atingido. Por favor, remova algumas fotos antigas.');
+                        return;
+                    }
+                }
+                
+                // Recarregar seção de cafés
+                initCoffeeSpots();
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+// Deletar foto de café
+function deleteCoffeePhoto(index) {
+    if (!confirm('Tem certeza que deseja remover esta foto?')) {
+        return;
+    }
+    
+    let coffeePhotos = [];
+    try {
+        const saved = localStorage.getItem('julianaCoffeePhotos');
+        if (saved) {
+            coffeePhotos = JSON.parse(saved);
+        }
+    } catch (e) {
+        console.error('Erro ao carregar fotos:', e);
+    }
+    
+    if (index >= 0 && index < coffeePhotos.length) {
+        coffeePhotos.splice(index, 1);
+        localStorage.setItem('julianaCoffeePhotos', JSON.stringify(coffeePhotos));
+        initCoffeeSpots();
+    }
+}
+
+// Abrir modal de foto
+function openCoffeePhotoModal(photoUrl) {
+    const modal = document.createElement('div');
+    modal.className = 'coffee-photo-modal';
+    modal.innerHTML = `
+        <div class="coffee-photo-modal-content">
+            <span class="close-photo-modal" onclick="this.closest('.coffee-photo-modal').remove()">&times;</span>
+            <img src="${photoUrl}" alt="Momento de café" class="modal-photo-img">
+        </div>
+    `;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.remove();
+        }
     });
 }
 
@@ -313,11 +459,17 @@ function renderUnifiedLibrary(filter = 'all') {
         const displayTitle = book.title.length > 20 ? book.title.substring(0, 17) + '...' : book.title;
         
         if (book.type === 'planner') {
-            // Livro do planner - abrir modal com dados do planner
+            // Livro do planner - abrir modal com dados do planner + botão excluir
+            const plannerBookIndex = plannerBooks.findIndex(b => b.id === book.plannerData.id);
             bookItem.innerHTML = `
-                <div class="book-3d-cover" onclick="openPlannerBookModal(${book.displayIndex})">
-                    <div class="book-3d-spine">${displayTitle}</div>
-                    <div class="book-3d-pages"></div>
+                <div class="book-3d-cover-wrapper">
+                    <div class="book-3d-cover" onclick="openPlannerBookModal(${book.displayIndex})">
+                        <div class="book-3d-spine">${displayTitle}</div>
+                        <div class="book-3d-pages"></div>
+                    </div>
+                    <button class="book-delete-from-shelf" onclick="deleteBookFromShelf(${plannerBookIndex}, event)" title="Remover da prateleira">
+                        <span>×</span>
+                    </button>
                 </div>
             `;
         } else {
@@ -371,6 +523,49 @@ function renderUnifiedLibrary(filter = 'all') {
                 otherContainer.appendChild(bookItem);
             });
         }
+    }
+}
+
+// Deletar livro da prateleira
+function deleteBookFromShelf(plannerBookIndex, event) {
+    if (event) {
+        event.stopPropagation();
+    }
+    
+    if (!confirm('Tem certeza que deseja remover este livro da sua prateleira?')) {
+        return;
+    }
+    
+    // Verificar se plannerData existe
+    const plannerData = (typeof window.plannerData !== 'undefined' && window.plannerData) 
+        ? window.plannerData 
+        : (typeof plannerData !== 'undefined' && plannerData) 
+            ? plannerData 
+            : null;
+    
+    if (!plannerData || !plannerData.books) {
+        alert('Erro: Não foi possível encontrar os dados do planner.');
+        return;
+    }
+    
+    if (plannerBookIndex >= 0 && plannerBookIndex < plannerData.books.length) {
+        plannerData.books.splice(plannerBookIndex, 1);
+        
+        // Salvar dados
+        if (typeof savePlannerData === 'function') {
+            savePlannerData();
+        } else {
+            localStorage.setItem('julianaPlanner', JSON.stringify(plannerData));
+        }
+        
+        // Atualizar referência global
+        if (typeof window !== 'undefined') {
+            window.plannerData = plannerData;
+        }
+        
+        // Recarregar biblioteca
+        const activeFilter = document.querySelector('.library-filter-btn.active')?.getAttribute('data-filter') || 'all';
+        renderUnifiedLibrary(activeFilter);
     }
 }
 

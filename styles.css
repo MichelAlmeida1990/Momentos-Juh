@@ -628,6 +628,255 @@ textarea {
     margin-bottom: 20px;
 }
 
+/* Upload de Fotos de Café */
+.coffee-upload-section {
+    grid-column: 1 / -1;
+    margin-bottom: 30px;
+}
+
+.coffee-upload-card {
+    background: linear-gradient(135deg, var(--color-cream), rgba(244, 194, 194, 0.3));
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    border: 3px dashed rgba(230, 213, 247, 0.6);
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-soft);
+}
+
+.coffee-upload-card:hover {
+    border-color: rgba(230, 213, 247, 1);
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-medium);
+}
+
+.upload-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.upload-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--color-text);
+    margin-bottom: 10px;
+}
+
+.upload-description {
+    font-family: 'Poppins', sans-serif;
+    color: var(--color-text-light);
+    margin-bottom: 25px;
+    font-size: 1rem;
+}
+
+.upload-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--color-rose), var(--color-pink-old));
+    color: white;
+    padding: 15px 35px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-soft);
+    border: none;
+}
+
+.upload-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-medium);
+    background: linear-gradient(135deg, var(--color-pink-old), var(--color-rose));
+}
+
+.upload-btn:active {
+    transform: translateY(-1px);
+}
+
+/* Galeria de Fotos de Café */
+.coffee-photos-gallery {
+    grid-column: 1 / -1;
+    margin: 40px 0;
+}
+
+.gallery-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: var(--color-text);
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.gallery-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-rose), var(--color-pink-old));
+    border-radius: 2px;
+}
+
+.coffee-photos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.coffee-photo-card {
+    background: var(--color-cream);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.coffee-photo-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--color-rose);
+}
+
+.photo-wrapper {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(230, 213, 247, 0.3), rgba(244, 194, 194, 0.3));
+}
+
+.coffee-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.coffee-photo-card:hover .coffee-photo-img {
+    transform: scale(1.1);
+}
+
+.photo-delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(212, 165, 165, 0.95);
+    border: 2px solid white;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.coffee-photo-card:hover .photo-delete-btn {
+    opacity: 1;
+}
+
+.photo-delete-btn:hover {
+    background: rgba(212, 165, 165, 1);
+    transform: scale(1.15);
+}
+
+.photo-caption {
+    padding: 15px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--color-text);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.photo-date {
+    padding: 0 15px 15px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--color-text-light);
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+/* Modal de Foto */
+.coffee-photo-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: fadeIn 0.3s ease;
+}
+
+.coffee-photo-modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-photo-modal {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+    z-index: 10001;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.close-photo-modal:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.1);
+}
+
+.modal-photo-img {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 .coffee-title {
     font-family: 'Playfair Display', serif;
     font-size: 1.5rem;
@@ -715,6 +964,48 @@ textarea {
     cursor: pointer;
     animation: fadeInUp 0.6s ease-out both;
     transform-style: preserve-3d;
+}
+
+.book-3d-cover-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.book-delete-from-shelf {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(212, 165, 165, 0.95);
+    border: 2px solid white;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.book-3d-item:hover .book-delete-from-shelf {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.book-delete-from-shelf:hover {
+    background: rgba(212, 165, 165, 1);
+    transform: scale(1.2);
+}
+
+.book-delete-from-shelf span {
+    line-height: 1;
 }
 
 .book-3d-cover {
@@ -3714,6 +4005,27 @@ textarea {
         font-size: 3rem;
     }
     
+    .coffee-photos-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+    }
+    
+    .coffee-upload-card {
+        padding: 25px;
+    }
+    
+    .upload-title {
+        font-size: 1.5rem;
+    }
+    
+    .gallery-title {
+        font-size: 1.8rem;
+    }
+    
+    .photo-wrapper {
+        height: 200px;
+    }
+    
     .subtitle {
         font-size: 1.5rem;
     }
@@ -4262,6 +4574,44 @@ textarea {
 @media (max-width: 480px) {
     .main-title {
         font-size: 2.5rem;
+    }
+    
+    .coffee-photos-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .coffee-upload-card {
+        padding: 20px;
+    }
+    
+    .upload-icon {
+        font-size: 3rem;
+    }
+    
+    .upload-title {
+        font-size: 1.3rem;
+    }
+    
+    .upload-description {
+        font-size: 0.9rem;
+    }
+    
+    .upload-btn {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+    
+    .gallery-title {
+        font-size: 1.5rem;
+    }
+    
+    .photo-wrapper {
+        height: 180px;
+    }
+    
+    .coffee-photo-card {
+        margin-bottom: 0;
     }
     
     .subtitle {
