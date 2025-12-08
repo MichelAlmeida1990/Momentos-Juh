@@ -211,23 +211,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Formulário de adicionar livro
     const addBookForm = document.getElementById('add-book-form');
     if (addBookForm) {
-        // Remover listeners antigos se existirem
-        const newForm = addBookForm.cloneNode(true);
-        addBookForm.parentNode.replaceChild(newForm, addBookForm);
-        
-        const form = document.getElementById('add-book-form');
-        form.addEventListener('submit', function(e) {
+        addBookForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
             // Verificar se é edição
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const editIndex = submitBtn.getAttribute('data-edit-index');
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const editIndex = submitBtn ? submitBtn.getAttribute('data-edit-index') : null;
             
             // Coletar stickers selecionados
             const selectedStickers = Array.from(document.querySelectorAll('.book-sticker-check:checked'))
                 .map(cb => cb.value);
             
-            if (editIndex !== null && editIndex !== undefined) {
+            if (editIndex !== null && editIndex !== undefined && editIndex !== '') {
                 // É edição
                 const bookIndex = parseInt(editIndex);
                 if (bookIndex >= 0 && bookIndex < plannerData.books.length) {
