@@ -632,6 +632,8 @@ textarea {
 .coffee-upload-section {
     grid-column: 1 / -1;
     margin-bottom: 30px;
+    width: 100%;
+    display: block;
 }
 
 .coffee-upload-card {
@@ -642,6 +644,9 @@ textarea {
     border: 3px dashed rgba(230, 213, 247, 0.6);
     transition: all 0.3s ease;
     box-shadow: var(--shadow-soft);
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
 }
 
 .coffee-upload-card:hover {
