@@ -217,13 +217,20 @@ function initCoffeeSpots() {
             photoCard.className = 'coffee-photo-card';
             // Escapar aspas na URL para evitar problemas
             const safeUrl = photo.url.replace(/'/g, "\\'");
+            const place = photo.place ? `<p class="photo-place">📍 ${photo.place}</p>` : '';
+            const caption = photo.caption ? `<p class="photo-caption">${photo.caption}</p>` : '';
+            const tags = photo.tags && photo.tags.length > 0 ? `<div class="photo-tags">${photo.tags.map(tag => `<span class="photo-tag">${tag}</span>`).join('')}</div>` : '';
+            
             photoCard.innerHTML = `
                 <div class="photo-wrapper">
-                    <img src="${photo.url}" alt="Momento de café" class="coffee-photo-img" onclick="openCoffeePhotoModal('${safeUrl}')">
-                    <button class="photo-delete-btn" onclick="deleteCoffeePhoto(${index})" title="Remover foto">×</button>
+                    <img src="${photo.url}" alt="Momento de café" class="coffee-photo-img" onclick="openCoffeePhotoModal(${index})">
+                    <button class="photo-delete-btn" onclick="deleteCoffeePhoto(${index}, event)" title="Remover foto">×</button>
+                    <button class="photo-edit-btn" onclick="editCoffeePhoto(${index}, event)" title="Editar informações">✏️</button>
                 </div>
-                ${photo.caption ? `<p class="photo-caption">${photo.caption}</p>` : ''}
-                <p class="photo-date">${photo.date || 'Sem data'}</p>
+                ${place}
+                ${caption}
+                ${tags}
+                <p class="photo-date">📅 ${photo.date || 'Sem data'}</p>
             `;
             galleryGrid.appendChild(photoCard);
         });
@@ -261,7 +268,10 @@ function handleCoffeePhotoUpload(event) {
         console.error('Erro ao carregar fotos:', e);
     }
     
-    Array.from(files).forEach(file => {
+    let processedCount = 0;
+    const totalFiles = Array.from(files).filter(f => f.type.startsWith('image/')).length;
+    
+    Array.from(files).forEach((file, fileIndex) => {
         if (file.type.startsWith('image/')) {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -269,22 +279,46 @@ function handleCoffeePhotoUpload(event) {
                     url: e.target.result,
                     date: new Date().toLocaleDateString('pt-BR'),
                     caption: '',
+                    place: '',
+                    tags: [],
                     timestamp: Date.now()
                 };
                 coffeePhotos.push(photoData);
+                processedCount++;
                 
-                // Salvar no localStorage
-                try {
-                    localStorage.setItem('julianaCoffeePhotos', JSON.stringify(coffeePhotos));
-                } catch (err) {
-                    if (err.name === 'QuotaExceededError') {
-                        alert('Limite de armazenamento atingido. Por favor, remova algumas fotos antigas.');
-                        return;
+                // Se é a última foto, abrir modal de edição
+                if (processedCount === totalFiles) {
+                    // Salvar no localStorage primeiro
+                    try {
+                        localStorage.setItem('julianaCoffeePhotos', JSON.stringify(coffeePhotos));
+                    } catch (err) {
+                        if (err.name === 'QuotaExceededError') {
+                            alert('Limite de armazenamento atingido. Por favor, remova algumas fotos antigas.');
+                            return;
+                        }
+                    }
+                    
+                    // Abrir modal de edição para a última foto adicionada
+                    const lastIndex = coffeePhotos.length - 1;
+                    setTimeout(() => {
+                        editCoffeePhoto(lastIndex);
+                    }, 300);
+                } else {
+                    // Salvar incrementalmente
+                    try {
+                        localStorage.setItem('julianaCoffeePhotos', JSON.stringify(coffeePhotos));
+                    } catch (err) {
+                        if (err.name === 'QuotaExceededError') {
+                            alert('Limite de armazenamento atingido. Por favor, remova algumas fotos antigas.');
+                            return;
+                        }
                     }
                 }
                 
                 // Recarregar seção de cafés
-                initCoffeeSpots();
+                if (processedCount === totalFiles) {
+                    initCoffeeSpots();
+                }
             };
             reader.readAsDataURL(file);
         }
@@ -292,7 +326,11 @@ function handleCoffeePhotoUpload(event) {
 }
 
 // Deletar foto de café
-function deleteCoffeePhoto(index) {
+function deleteCoffeePhoto(index, event) {
+    if (event) {
+        event.stopPropagation();
+    }
+    
     if (!confirm('Tem certeza que deseja remover esta foto?')) {
         return;
     }
@@ -314,14 +352,162 @@ function deleteCoffeePhoto(index) {
     }
 }
 
+// Editar informações da foto
+function editCoffeePhoto(index, event) {
+    if (event) {
+        event.stopPropagation();
+    }
+    
+    let coffeePhotos = [];
+    try {
+        const saved = localStorage.getItem('julianaCoffeePhotos');
+        if (saved) {
+            coffeePhotos = JSON.parse(saved);
+        }
+    } catch (e) {
+        console.error('Erro ao carregar fotos:', e);
+        return;
+    }
+    
+    if (index < 0 || index >= coffeePhotos.length) {
+        return;
+    }
+    
+    const photo = coffeePhotos[index];
+    
+    // Criar modal de edição
+    const modal = document.createElement('div');
+    modal.className = 'coffee-photo-edit-modal';
+    modal.innerHTML = `
+        <div class="coffee-photo-edit-content">
+            <span class="close-edit-modal" onclick="this.closest('.coffee-photo-edit-modal').remove()">&times;</span>
+            <h3 class="edit-modal-title">📝 Editar Informações da Foto</h3>
+            <div class="edit-photo-preview">
+                <img src="${photo.url}" alt="Preview" class="edit-photo-img">
+            </div>
+            <form class="edit-photo-form" onsubmit="savePhotoInfo(${index}, event)">
+                <div class="form-group">
+                    <label>📍 Lugar / Local</label>
+                    <input type="text" id="photo-place-${index}" value="${photo.place || ''}" placeholder="Ex: Café da Manhã em Paris">
+                </div>
+                <div class="form-group">
+                    <label>💭 Legenda / Descrição</label>
+                    <textarea id="photo-caption-${index}" rows="3" placeholder="Descreva este momento especial...">${photo.caption || ''}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>🏷️ Tags (separadas por vírgula)</label>
+                    <input type="text" id="photo-tags-${index}" value="${photo.tags ? photo.tags.join(', ') : ''}" placeholder="Ex: café, manhã, paris, especial">
+                    <small>Separe as tags por vírgula</small>
+                </div>
+                <div class="form-group">
+                    <label>📅 Data</label>
+                    <input type="date" id="photo-date-${index}" value="${photo.dateInput || ''}">
+                </div>
+                <div class="edit-form-buttons">
+                    <button type="submit" class="save-photo-btn">💾 Salvar</button>
+                    <button type="button" class="cancel-photo-btn" onclick="this.closest('.coffee-photo-edit-modal').remove()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    // Fechar ao clicar fora
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+}
+
+// Salvar informações da foto
+function savePhotoInfo(index, event) {
+    event.preventDefault();
+    
+    let coffeePhotos = [];
+    try {
+        const saved = localStorage.getItem('julianaCoffeePhotos');
+        if (saved) {
+            coffeePhotos = JSON.parse(saved);
+        }
+    } catch (e) {
+        console.error('Erro ao carregar fotos:', e);
+        return;
+    }
+    
+    if (index < 0 || index >= coffeePhotos.length) {
+        return;
+    }
+    
+    const place = document.getElementById(`photo-place-${index}`).value.trim();
+    const caption = document.getElementById(`photo-caption-${index}`).value.trim();
+    const tagsInput = document.getElementById(`photo-tags-${index}`).value.trim();
+    const dateInput = document.getElementById(`photo-date-${index}`).value;
+    
+    // Processar tags
+    const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) : [];
+    
+    // Processar data
+    let date = coffeePhotos[index].date;
+    if (dateInput) {
+        const dateObj = new Date(dateInput);
+        date = dateObj.toLocaleDateString('pt-BR');
+    }
+    
+    // Atualizar foto
+    coffeePhotos[index] = {
+        ...coffeePhotos[index],
+        place: place,
+        caption: caption,
+        tags: tags,
+        date: date,
+        dateInput: dateInput
+    };
+    
+    // Salvar
+    localStorage.setItem('julianaCoffeePhotos', JSON.stringify(coffeePhotos));
+    
+    // Fechar modal e recarregar
+    document.querySelector('.coffee-photo-edit-modal').remove();
+    initCoffeeSpots();
+}
+
 // Abrir modal de foto
-function openCoffeePhotoModal(photoUrl) {
+function openCoffeePhotoModal(photoIndex) {
+    let coffeePhotos = [];
+    try {
+        const saved = localStorage.getItem('julianaCoffeePhotos');
+        if (saved) {
+            coffeePhotos = JSON.parse(saved);
+        }
+    } catch (e) {
+        console.error('Erro ao carregar fotos:', e);
+        return;
+    }
+    
+    if (photoIndex < 0 || photoIndex >= coffeePhotos.length) {
+        return;
+    }
+    
+    const photo = coffeePhotos[photoIndex];
+    const safeUrl = photo.url.replace(/'/g, "\\'");
+    
+    const place = photo.place ? `<p class="modal-photo-place">📍 ${photo.place}</p>` : '';
+    const caption = photo.caption ? `<p class="modal-photo-caption">${photo.caption}</p>` : '';
+    const tags = photo.tags && photo.tags.length > 0 ? `<div class="modal-photo-tags">${photo.tags.map(tag => `<span class="modal-photo-tag">${tag}</span>`).join('')}</div>` : '';
+    
     const modal = document.createElement('div');
     modal.className = 'coffee-photo-modal';
     modal.innerHTML = `
         <div class="coffee-photo-modal-content">
             <span class="close-photo-modal" onclick="this.closest('.coffee-photo-modal').remove()">&times;</span>
-            <img src="${photoUrl}" alt="Momento de café" class="modal-photo-img">
+            <img src="${photo.url}" alt="Momento de café" class="modal-photo-img">
+            <div class="modal-photo-info">
+                ${place}
+                ${caption}
+                ${tags}
+                <p class="modal-photo-date">📅 ${photo.date || 'Sem data'}</p>
+            </div>
         </div>
     `;
     document.body.appendChild(modal);

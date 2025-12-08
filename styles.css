@@ -770,17 +770,17 @@ textarea {
     transform: scale(1.1);
 }
 
-.photo-delete-btn {
+.photo-delete-btn,
+.photo-edit-btn {
     position: absolute;
     top: 10px;
-    right: 10px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
     background: rgba(212, 165, 165, 0.95);
     border: 2px solid white;
     color: white;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     cursor: pointer;
     display: flex;
@@ -792,7 +792,18 @@ textarea {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.coffee-photo-card:hover .photo-delete-btn {
+.photo-delete-btn {
+    right: 10px;
+    font-size: 20px;
+}
+
+.photo-edit-btn {
+    right: 50px;
+    background: rgba(230, 213, 247, 0.95);
+}
+
+.coffee-photo-card:hover .photo-delete-btn,
+.coffee-photo-card:hover .photo-edit-btn {
     opacity: 1;
 }
 
@@ -801,13 +812,44 @@ textarea {
     transform: scale(1.15);
 }
 
+.photo-edit-btn:hover {
+    background: rgba(230, 213, 247, 1);
+    transform: scale(1.15);
+}
+
+.photo-place {
+    padding: 12px 15px 8px;
+    font-family: 'Playfair Display', serif;
+    color: var(--color-text);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
 .photo-caption {
-    padding: 15px;
+    padding: 8px 15px;
     font-family: 'Poppins', sans-serif;
     color: var(--color-text);
     font-size: 0.95rem;
     line-height: 1.6;
     margin: 0;
+}
+
+.photo-tags {
+    padding: 8px 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.photo-tag {
+    background: linear-gradient(135deg, rgba(230, 213, 247, 0.3), rgba(244, 194, 194, 0.3));
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-family: 'Poppins', sans-serif;
+    color: var(--color-text);
+    border: 1px solid rgba(230, 213, 247, 0.5);
 }
 
 .photo-date {
@@ -867,10 +909,222 @@ textarea {
 
 .modal-photo-img {
     max-width: 100%;
-    max-height: 90vh;
+    max-height: 70vh;
     object-fit: contain;
     border-radius: 10px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+}
+
+.modal-photo-info {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.modal-photo-place {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--color-text);
+    font-weight: 600;
+    margin: 0 0 10px 0;
+}
+
+.modal-photo-caption {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: var(--color-text);
+    line-height: 1.6;
+    margin: 0 0 15px 0;
+}
+
+.modal-photo-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.modal-photo-tag {
+    background: linear-gradient(135deg, rgba(230, 213, 247, 0.4), rgba(244, 194, 194, 0.4));
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-family: 'Poppins', sans-serif;
+    color: var(--color-text);
+    border: 1px solid rgba(230, 213, 247, 0.6);
+}
+
+.modal-photo-date {
+    font-family: 'Poppins', sans-serif;
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Modal de Edição de Foto */
+.coffee-photo-edit-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    animation: fadeIn 0.3s ease;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.coffee-photo-edit-content {
+    background: var(--color-cream);
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.close-edit-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: var(--color-text);
+    font-size: 35px;
+    cursor: pointer;
+    z-index: 10002;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(212, 165, 165, 0.2);
+    transition: all 0.3s ease;
+}
+
+.close-edit-modal:hover {
+    background: rgba(212, 165, 165, 0.4);
+    transform: scale(1.1);
+}
+
+.edit-modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--color-text);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.edit-photo-preview {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    background: linear-gradient(135deg, rgba(230, 213, 247, 0.3), rgba(244, 194, 194, 0.3));
+}
+
+.edit-photo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.edit-photo-form .form-group {
+    margin-bottom: 20px;
+}
+
+.edit-photo-form label {
+    display: block;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.edit-photo-form input[type="text"],
+.edit-photo-form input[type="date"],
+.edit-photo-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid rgba(230, 213, 247, 0.5);
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: var(--color-text);
+    background: white;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.edit-photo-form input[type="text"]:focus,
+.edit-photo-form input[type="date"]:focus,
+.edit-photo-form textarea:focus {
+    outline: none;
+    border-color: var(--color-rose);
+    box-shadow: 0 0 0 3px rgba(230, 213, 247, 0.2);
+}
+
+.edit-photo-form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.edit-photo-form small {
+    display: block;
+    margin-top: 5px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--color-text-light);
+    font-size: 0.85rem;
+}
+
+.edit-form-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.save-photo-btn,
+.cancel-photo-btn {
+    flex: 1;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.save-photo-btn {
+    background: linear-gradient(135deg, var(--color-rose), var(--color-pink-old));
+    color: white;
+    box-shadow: var(--shadow-soft);
+}
+
+.save-photo-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.cancel-photo-btn {
+    background: rgba(212, 165, 165, 0.2);
+    color: var(--color-text);
+}
+
+.cancel-photo-btn:hover {
+    background: rgba(212, 165, 165, 0.3);
 }
 
 @keyframes fadeIn {
