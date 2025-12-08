@@ -4163,6 +4163,12 @@ textarea {
         font-size: 3.5rem;
     }
     
+    /* Garantir que botões de foto fiquem visíveis no iPad */
+    .photo-delete-btn,
+    .photo-edit-btn {
+        opacity: 1 !important;
+    }
+    
     .subtitle {
         font-size: 1.6rem;
     }
