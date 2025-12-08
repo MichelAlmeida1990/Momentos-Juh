@@ -520,6 +520,9 @@ function openCoffeePhotoModal(photoIndex) {
 
 // Inicializar Livros - Design 3D Criativo
 function initBooks() {
+    // Carregar livros fixos do localStorage
+    loadFixedBooks();
+    
     // Renderizar todos os livros na estante unificada
     renderUnifiedLibrary('all');
     initLibraryFiltersUnified();
@@ -977,8 +980,38 @@ function initLibraryFiltersUnified() {
     });
 }
 
+// Carregar livros fixos do localStorage ou usar os padrões
+function loadFixedBooks() {
+    try {
+        const savedColleen = localStorage.getItem('julianaColleenBooks');
+        const savedOther = localStorage.getItem('julianaOtherBooks');
+        
+        if (savedColleen) {
+            siteData.colleenHooverBooks = JSON.parse(savedColleen);
+        }
+        if (savedOther) {
+            siteData.otherBooks = JSON.parse(savedOther);
+        }
+    } catch (e) {
+        console.error('Erro ao carregar livros fixos:', e);
+    }
+}
+
+// Salvar livros fixos no localStorage
+function saveFixedBooks() {
+    try {
+        localStorage.setItem('julianaColleenBooks', JSON.stringify(siteData.colleenHooverBooks));
+        localStorage.setItem('julianaOtherBooks', JSON.stringify(siteData.otherBooks));
+    } catch (e) {
+        console.error('Erro ao salvar livros fixos:', e);
+    }
+}
+
 // Abrir modal do livro
 function openBookModal(index, type) {
+    // Carregar livros atualizados
+    loadFixedBooks();
+    
     const books = type === 'colleen' ? siteData.colleenHooverBooks : siteData.otherBooks;
     const book = books[index];
     
@@ -991,7 +1024,11 @@ function openBookModal(index, type) {
         modalBody.innerHTML = `
             <div class="book-modal-cover" style="background: linear-gradient(135deg, ${book.color}, ${adjustColor(book.color, -30)})">
                 <h3 class="book-modal-title">${book.title}</h3>
-                ${type === 'colleen' ? '<p class="book-modal-author">por Colleen Hoover</p>' : ''}
+                ${type === 'colleen' ? '<p class="book-modal-author">por Colleen Hoover</p>' : '<p class="book-modal-author">por ' + (book.author || 'Autor') + '</p>'}
+                <div class="book-modal-actions">
+                    <button class="book-edit-btn" onclick="editFixedBook(${index}, '${type}')" title="Editar livro">✏️ Editar</button>
+                    <button class="book-delete-modal-btn" onclick="deleteFixedBook(${index}, '${type}')" title="Excluir livro">🗑️ Excluir</button>
+                </div>
             </div>
             <div class="book-modal-content">
                 <h4 class="book-modal-synopsis-title">Sinopse</h4>
@@ -1000,6 +1037,112 @@ function openBookModal(index, type) {
         `;
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+    }
+}
+
+// Editar livro fixo
+function editFixedBook(index, type) {
+    closeBookModal();
+    
+    loadFixedBooks();
+    const books = type === 'colleen' ? siteData.colleenHooverBooks : siteData.otherBooks;
+    const book = books[index];
+    
+    if (!book) return;
+    
+    // Criar modal de edição
+    const modal = document.createElement('div');
+    modal.className = 'coffee-photo-edit-modal';
+    modal.innerHTML = `
+        <div class="coffee-photo-edit-content">
+            <span class="close-edit-modal" onclick="this.closest('.coffee-photo-edit-modal').remove()">&times;</span>
+            <h3 class="edit-modal-title">📝 Editar Livro</h3>
+            <form class="edit-photo-form" onsubmit="saveFixedBook(${index}, '${type}', event)">
+                <div class="form-group">
+                    <label>Título do Livro</label>
+                    <input type="text" id="fixed-book-title-${type}-${index}" value="${book.title || ''}" required>
+                </div>
+                <div class="form-group">
+                    <label>Autor(a)</label>
+                    <input type="text" id="fixed-book-author-${type}-${index}" value="${book.author || (type === 'colleen' ? 'Colleen Hoover' : '')}" required>
+                </div>
+                <div class="form-group">
+                    <label>Sinopse</label>
+                    <textarea id="fixed-book-synopsis-${type}-${index}" rows="6" required>${book.synopsis || ''}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Cor da Capa (código hexadecimal)</label>
+                    <input type="color" id="fixed-book-color-${type}-${index}" value="${book.color || '#E8B4B8'}">
+                </div>
+                <div class="edit-form-buttons">
+                    <button type="submit" class="save-photo-btn">💾 Salvar</button>
+                    <button type="button" class="cancel-photo-btn" onclick="this.closest('.coffee-photo-edit-modal').remove()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+}
+
+// Salvar livro fixo editado
+function saveFixedBook(index, type, event) {
+    event.preventDefault();
+    
+    loadFixedBooks();
+    const books = type === 'colleen' ? siteData.colleenHooverBooks : siteData.otherBooks;
+    
+    if (index < 0 || index >= books.length) return;
+    
+    const title = document.getElementById(`fixed-book-title-${type}-${index}`).value.trim();
+    const author = document.getElementById(`fixed-book-author-${type}-${index}`).value.trim();
+    const synopsis = document.getElementById(`fixed-book-synopsis-${type}-${index}`).value.trim();
+    const color = document.getElementById(`fixed-book-color-${type}-${index}`).value;
+    
+    if (!title || !author || !synopsis) {
+        alert('Por favor, preencha todos os campos!');
+        return;
+    }
+    
+    books[index] = {
+        title: title,
+        author: author,
+        synopsis: synopsis,
+        color: color
+    };
+    
+    saveFixedBooks();
+    
+    document.querySelector('.coffee-photo-edit-modal').remove();
+    
+    // Recarregar biblioteca
+    const activeFilter = document.querySelector('.library-filter-btn.active')?.getAttribute('data-filter') || 'all';
+    renderUnifiedLibrary(activeFilter);
+}
+
+// Deletar livro fixo
+function deleteFixedBook(index, type) {
+    if (!confirm('Tem certeza que deseja remover este livro da prateleira?')) {
+        return;
+    }
+    
+    loadFixedBooks();
+    const books = type === 'colleen' ? siteData.colleenHooverBooks : siteData.otherBooks;
+    
+    if (index >= 0 && index < books.length) {
+        books.splice(index, 1);
+        saveFixedBooks();
+        
+        closeBookModal();
+        
+        // Recarregar biblioteca
+        const activeFilter = document.querySelector('.library-filter-btn.active')?.getAttribute('data-filter') || 'all';
+        renderUnifiedLibrary(activeFilter);
     }
 }
 
