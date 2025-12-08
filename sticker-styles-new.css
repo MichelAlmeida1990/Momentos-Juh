@@ -65,6 +65,23 @@
     letter-spacing: 0.5px;
 }
 
+/* Texto preto para emoções e gêneros */
+.sticker-loved-new .sticker-text-new,
+.sticker-cried-new .sticker-text-new,
+.sticker-amazed-new .sticker-text-new,
+.sticker-sad-new .sticker-text-new,
+.sticker-happy-new .sticker-text-new,
+.sticker-shocked-new .sticker-text-new,
+.sticker-romance-new .sticker-text-new,
+.sticker-suspense-new .sticker-text-new,
+.sticker-classic-new .sticker-text-new,
+.sticker-drama-new .sticker-text-new,
+.sticker-fantasy-new .sticker-text-new,
+.sticker-thriller-new .sticker-text-new {
+    color: #000000 !important;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
 .sticker-icon-large-new {
     font-size: 3.5rem;
     filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
@@ -195,4 +212,5 @@
 .sticker-item:active .sticker-premium-new {
     transform: translateY(-2px) scale(1.05) rotate(2deg);
 }
+
 

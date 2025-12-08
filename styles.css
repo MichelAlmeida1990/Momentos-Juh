@@ -787,9 +787,10 @@ textarea {
     align-items: center;
     justify-content: center;
     z-index: 10;
-    opacity: 0;
+    opacity: 1;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    pointer-events: auto;
 }
 
 .photo-delete-btn {
@@ -802,9 +803,30 @@ textarea {
     background: rgba(230, 213, 247, 0.95);
 }
 
-.coffee-photo-card:hover .photo-delete-btn,
-.coffee-photo-card:hover .photo-edit-btn {
-    opacity: 1;
+/* Desktop: mostrar no hover */
+@media (hover: hover) and (pointer: fine) {
+    .photo-delete-btn,
+    .photo-edit-btn {
+        opacity: 0;
+    }
+    
+    .coffee-photo-card:hover .photo-delete-btn,
+    .coffee-photo-card:hover .photo-edit-btn {
+        opacity: 1;
+    }
+}
+
+/* Mobile/Tablet: sempre visíveis */
+@media (hover: none) or (pointer: coarse) {
+    .photo-delete-btn,
+    .photo-edit-btn {
+        opacity: 1;
+        background: rgba(212, 165, 165, 0.98);
+    }
+    
+    .photo-edit-btn {
+        background: rgba(230, 213, 247, 0.98);
+    }
 }
 
 .photo-delete-btn:hover {
@@ -4398,6 +4420,18 @@ textarea {
         height: 200px;
     }
     
+    .photo-delete-btn,
+    .photo-edit-btn {
+        opacity: 1 !important;
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+    }
+    
+    .photo-edit-btn {
+        right: 55px;
+    }
+    
     .subtitle {
         font-size: 1.5rem;
     }
@@ -5027,6 +5061,24 @@ textarea {
     
     .photo-wrapper {
         height: 180px;
+    }
+    
+    .photo-delete-btn,
+    .photo-edit-btn {
+        opacity: 1 !important;
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+        background: rgba(212, 165, 165, 0.98) !important;
+    }
+    
+    .photo-edit-btn {
+        right: 50px;
+        background: rgba(230, 213, 247, 0.98) !important;
+    }
+    
+    .photo-delete-btn {
+        right: 10px;
     }
     
     .coffee-photo-card {
