@@ -23,8 +23,18 @@ function loadPlannerData() {
 
 // Salvar dados
 function savePlannerData() {
-    localStorage.setItem('julianaPlanner', JSON.stringify(plannerData));
-    window.plannerData = plannerData; // Atualizar referência global
+    try {
+        localStorage.setItem('julianaPlanner', JSON.stringify(plannerData));
+        window.plannerData = plannerData; // Atualizar referência global
+        console.log('✅ Dados do planner salvos com sucesso!');
+    } catch (e) {
+        console.error('❌ Erro ao salvar dados do planner:', e);
+        if (e.name === 'QuotaExceededError') {
+            alert('Limite de armazenamento atingido. Alguns dados podem não ter sido salvos.');
+        } else {
+            alert('Erro ao salvar dados. Tente novamente.');
+        }
+    }
 }
 
 // Inicializar Planner

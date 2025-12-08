@@ -291,11 +291,15 @@ function handleCoffeePhotoUpload(event) {
                     // Salvar no localStorage primeiro
                     try {
                         localStorage.setItem('julianaCoffeePhotos', JSON.stringify(coffeePhotos));
+                        console.log('✅ Foto adicionada e salva!');
                     } catch (err) {
                         if (err.name === 'QuotaExceededError') {
                             alert('Limite de armazenamento atingido. Por favor, remova algumas fotos antigas.');
                             return;
                         }
+                        console.error('❌ Erro ao salvar foto:', err);
+                        alert('Erro ao salvar foto. Tente novamente.');
+                        return;
                     }
                     
                     // Abrir modal de edição para a última foto adicionada
@@ -307,11 +311,13 @@ function handleCoffeePhotoUpload(event) {
                     // Salvar incrementalmente
                     try {
                         localStorage.setItem('julianaCoffeePhotos', JSON.stringify(coffeePhotos));
+                        console.log(`✅ Foto ${processedCount}/${totalFiles} salva!`);
                     } catch (err) {
                         if (err.name === 'QuotaExceededError') {
                             alert('Limite de armazenamento atingido. Por favor, remova algumas fotos antigas.');
                             return;
                         }
+                        console.error('❌ Erro ao salvar foto:', err);
                     }
                 }
                 
@@ -347,7 +353,14 @@ function deleteCoffeePhoto(index, event) {
     
     if (index >= 0 && index < coffeePhotos.length) {
         coffeePhotos.splice(index, 1);
-        localStorage.setItem('julianaCoffeePhotos', JSON.stringify(coffeePhotos));
+        try {
+            localStorage.setItem('julianaCoffeePhotos', JSON.stringify(coffeePhotos));
+            console.log('✅ Foto removida e dados salvos!');
+        } catch (e) {
+            console.error('❌ Erro ao salvar após remoção:', e);
+            alert('Erro ao remover foto. Tente novamente.');
+            return;
+        }
         initCoffeeSpots();
     }
 }
@@ -1002,8 +1015,10 @@ function saveFixedBooks() {
     try {
         localStorage.setItem('julianaColleenBooks', JSON.stringify(siteData.colleenHooverBooks));
         localStorage.setItem('julianaOtherBooks', JSON.stringify(siteData.otherBooks));
+        console.log('✅ Livros fixos salvos com sucesso!');
     } catch (e) {
-        console.error('Erro ao salvar livros fixos:', e);
+        console.error('❌ Erro ao salvar livros fixos:', e);
+        alert('Erro ao salvar livros. Tente novamente.');
     }
 }
 
