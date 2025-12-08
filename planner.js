@@ -510,30 +510,32 @@ function initDragAndDrop() {
         let touchStartTime;
         
         item.addEventListener('touchstart', function(e) {
-            e.preventDefault();
             const touch = e.touches[0];
             touchStartX = touch.clientX;
             touchStartY = touch.clientY;
             touchStartTime = Date.now();
             isDragging = false;
             
-            // Adicionar classe visual de arrastando
-            this.style.opacity = '0.7';
-            this.style.transform = 'scale(1.1)';
-            this.style.transition = 'none';
-        }, { passive: false });
+            // Não prevenir default ainda - permite scroll
+        }, { passive: true });
         
         item.addEventListener('touchmove', function(e) {
             if (!touchStartX || !touchStartY) return;
-            e.preventDefault();
             
             const touch = e.touches[0];
             const deltaX = Math.abs(touch.clientX - touchStartX);
             const deltaY = Math.abs(touch.clientY - touchStartY);
             
-            // Se moveu mais de 10px, considera como drag
-            if (deltaX > 10 || deltaY > 10) {
-                isDragging = true;
+            // Se moveu mais horizontalmente que verticalmente, é drag
+            // Se moveu mais verticalmente, é scroll
+            if (deltaX > 15 && deltaX > deltaY) {
+                // É drag horizontal - prevenir scroll
+                if (!isDragging) {
+                    isDragging = true;
+                    this.classList.add('dragging');
+                    e.preventDefault();
+                }
+                
                 this.style.opacity = '0.5';
                 this.style.transform = 'scale(1.15)';
                 
@@ -541,7 +543,14 @@ function initDragAndDrop() {
                 const offsetX = touch.clientX - touchStartX;
                 const offsetY = touch.clientY - touchStartY;
                 this.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(1.15)`;
+            } else if (isDragging) {
+                // Continuar drag
+                e.preventDefault();
+                const offsetX = touch.clientX - touchStartX;
+                const offsetY = touch.clientY - touchStartY;
+                this.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(1.15)`;
             }
+            // Se não é drag, permite scroll normal (não previne default)
         }, { passive: false });
         
         item.addEventListener('touchend', function(e) {
@@ -549,6 +558,7 @@ function initDragAndDrop() {
                 this.style.opacity = '1';
                 this.style.transform = 'scale(1)';
                 this.style.transition = '';
+                this.classList.remove('dragging');
                 return;
             }
             
@@ -558,6 +568,7 @@ function initDragAndDrop() {
             this.style.opacity = '1';
             this.style.transform = 'scale(1)';
             this.style.transition = '';
+            this.classList.remove('dragging');
             
             if (!isDragging) {
                 touchStartX = null;
@@ -594,10 +605,11 @@ function initDragAndDrop() {
             this.style.opacity = '1';
             this.style.transform = 'scale(1)';
             this.style.transition = '';
+            this.classList.remove('dragging');
             touchStartX = null;
             touchStartY = null;
             isDragging = false;
-        }, { passive: false });
+        }, { passive: true });
     });
     
     if (canvas) {
@@ -629,16 +641,16 @@ function initNoteStickerDrop() {
         area.addEventListener('dragover', function(e) {
             e.preventDefault();
             e.dataTransfer.dropEffect = 'copy';
-            this.style.backgroundColor = 'rgba(230, 213, 247, 0.3)';
+            this.classList.add('drag-over');
         });
         
         area.addEventListener('dragleave', function(e) {
-            this.style.backgroundColor = 'transparent';
+            this.classList.remove('drag-over');
         });
         
         area.addEventListener('drop', function(e) {
             e.preventDefault();
-            this.style.backgroundColor = 'transparent';
+            this.classList.remove('drag-over');
             
             const stickerId = e.dataTransfer.getData('text/plain');
             if (!stickerId || stickerId === 'move') return;
@@ -650,6 +662,26 @@ function initNoteStickerDrop() {
             
             addStickerToNote(noteId, stickerId, x, y);
         });
+        
+        // Adicionar feedback visual no touch para iPad
+        area.addEventListener('touchmove', function(e) {
+            // Verificar se há um sticker sendo arrastado
+            const draggingSticker = document.querySelector('.sticker-item.dragging');
+            if (draggingSticker) {
+                const touch = e.touches[0];
+                const rect = this.getBoundingClientRect();
+                if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
+                    touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
+                    this.classList.add('drag-over');
+                } else {
+                    this.classList.remove('drag-over');
+                }
+            }
+        }, { passive: true });
+        
+        area.addEventListener('touchend', function(e) {
+            this.classList.remove('drag-over');
+        }, { passive: true });
     });
 }
 

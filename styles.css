@@ -1033,6 +1033,8 @@ textarea {
     min-height: 500px;
     max-height: 800px;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
 }
 
 .planner-content.active {
@@ -1560,6 +1562,15 @@ textarea {
     background: rgba(255, 255, 255, 0.5);
     border: 2px dashed rgba(230, 213, 247, 0.5);
     transition: all 0.3s ease;
+    pointer-events: auto;
+    overflow: visible;
+    cursor: default;
+}
+
+.note-stickers-area.drag-over {
+    border-color: rgba(230, 213, 247, 1);
+    background: rgba(255, 255, 255, 0.9);
+    border-style: solid;
 }
 
 .note-stickers-area:hover {
@@ -1572,10 +1583,16 @@ textarea {
     cursor: grab;
     z-index: 10;
     transition: transform 0.2s ease;
-    touch-action: none;
+    touch-action: pan-y;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
+    pointer-events: auto;
+}
+
+.note-sticker-item.dragging {
+    touch-action: none;
+    cursor: grabbing;
 }
 
 .note-sticker-item:active {
@@ -1650,13 +1667,18 @@ textarea {
     border-radius: 15px;
     padding: 10px;
     text-align: center;
-    touch-action: none;
+    touch-action: pan-y;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
     cursor: grab;
     transition: all 0.3s ease;
-    user-select: none;
+    pointer-events: auto;
+}
+
+.sticker-item.dragging {
+    touch-action: none;
+    cursor: grabbing;
 }
 
 .sticker-item.sophisticated {
