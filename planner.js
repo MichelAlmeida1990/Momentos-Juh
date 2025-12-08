@@ -266,7 +266,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 id: Date.now(),
                 title: title,
                 content: content,
-                date: new Date().toLocaleDateString('pt-BR')
+                date: new Date().toLocaleDateString('pt-BR'),
+                stickers: []
             };
             
             plannerData.notes.push(note);
@@ -387,16 +388,50 @@ function renderNotes() {
         return;
     }
     
-    container.innerHTML = notes.map((note, index) => `
-        <div class="note-card">
+    container.innerHTML = notes.map((note, index) => {
+        // Renderizar stickers da anotação
+        const stickersHTML = note.stickers && note.stickers.length > 0 
+            ? note.stickers.map((sticker, stickerIndex) => {
+                const stickerConfig = getStickerConfig(sticker.id || sticker);
+                if (!stickerConfig) return '';
+                const stickerId = sticker.id || sticker;
+                return `
+                    <div class="note-sticker-item" 
+                         style="left: ${sticker.x || 0}px; top: ${sticker.y || 0}px;" 
+                         data-sticker-id="${stickerId}"
+                         data-note-index="${index}"
+                         data-sticker-index="${stickerIndex}">
+                        <div class="sticker-premium-new ${stickerConfig.class}-new">
+                            <div class="sticker-icon-new">${stickerConfig.icon}</div>
+                            ${stickerConfig.type !== 'decoration' ? `<div class="sticker-text-new">${stickerConfig.label}</div>` : ''}
+                            <div class="sticker-shine-new"></div>
+                        </div>
+                        <button class="note-sticker-remove" onclick="removeStickerFromNote(${index}, '${stickerId}')">×</button>
+                    </div>
+                `;
+            }).join('')
+            : '';
+        
+        return `
+        <div class="note-card" data-note-index="${index}">
             <div class="note-card-header">
                 <h4 class="note-card-title">${note.title}</h4>
                 <button class="note-delete-btn" onclick="deleteNote(${index})" title="Remover">×</button>
             </div>
             <p class="note-card-date">📅 ${note.date}</p>
             <p class="note-card-content">${note.content}</p>
+            <div class="note-stickers-area" data-note-id="${note.id}">
+                ${stickersHTML}
+            </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
+    
+    // Inicializar drag and drop para as anotações
+    initNoteStickerDrop();
+    
+    // Inicializar drag para stickers dentro das anotações
+    initNoteStickerDrag();
 }
 
 function openAddNoteModal() {
@@ -456,18 +491,119 @@ function initStickers() {
 }
 
 function initDragAndDrop() {
-    const stickerItems = document.querySelectorAll('.sticker-item');
+    const stickerItems = document.querySelectorAll('.sticker-item:not([data-drag-initialized])');
     const canvas = document.getElementById('sticker-canvas');
     
     stickerItems.forEach(item => {
+        const stickerId = item.getAttribute('data-sticker');
+        item.setAttribute('data-drag-initialized', 'true');
+        
+        // Suporte para drag HTML5 (desktop)
         item.addEventListener('dragstart', function(e) {
-            e.dataTransfer.setData('text/plain', this.getAttribute('data-sticker'));
+            e.dataTransfer.setData('text/plain', stickerId);
+            e.dataTransfer.effectAllowed = 'copy';
         });
+        
+        // Suporte para touch (iPad/mobile) - melhorado
+        let touchStartX, touchStartY;
+        let isDragging = false;
+        let touchStartTime;
+        
+        item.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+            touchStartTime = Date.now();
+            isDragging = false;
+            
+            // Adicionar classe visual de arrastando
+            this.style.opacity = '0.7';
+            this.style.transform = 'scale(1.1)';
+            this.style.transition = 'none';
+        }, { passive: false });
+        
+        item.addEventListener('touchmove', function(e) {
+            if (!touchStartX || !touchStartY) return;
+            e.preventDefault();
+            
+            const touch = e.touches[0];
+            const deltaX = Math.abs(touch.clientX - touchStartX);
+            const deltaY = Math.abs(touch.clientY - touchStartY);
+            
+            // Se moveu mais de 10px, considera como drag
+            if (deltaX > 10 || deltaY > 10) {
+                isDragging = true;
+                this.style.opacity = '0.5';
+                this.style.transform = 'scale(1.15)';
+                
+                // Mover visualmente o sticker
+                const offsetX = touch.clientX - touchStartX;
+                const offsetY = touch.clientY - touchStartY;
+                this.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(1.15)`;
+            }
+        }, { passive: false });
+        
+        item.addEventListener('touchend', function(e) {
+            if (!touchStartX || !touchStartY) {
+                this.style.opacity = '1';
+                this.style.transform = 'scale(1)';
+                this.style.transition = '';
+                return;
+            }
+            
+            const touch = e.changedTouches[0];
+            
+            // Reset visual
+            this.style.opacity = '1';
+            this.style.transform = 'scale(1)';
+            this.style.transition = '';
+            
+            if (!isDragging) {
+                touchStartX = null;
+                touchStartY = null;
+                return;
+            }
+            
+            // Encontrar elemento onde foi solto
+            const targetElement = document.elementFromPoint(touch.clientX, touch.clientY);
+            
+            // Verificar se soltou em uma área de drop
+            const noteArea = targetElement?.closest('.note-stickers-area');
+            const canvasArea = targetElement?.closest('.sticker-canvas');
+            
+            if (noteArea) {
+                const noteId = parseInt(noteArea.getAttribute('data-note-id'));
+                const rect = noteArea.getBoundingClientRect();
+                const x = touch.clientX - rect.left;
+                const y = touch.clientY - rect.top;
+                addStickerToNote(noteId, stickerId, x, y);
+            } else if (canvasArea) {
+                const rect = canvasArea.getBoundingClientRect();
+                const x = touch.clientX - rect.left;
+                const y = touch.clientY - rect.top;
+                addStickerToCanvas(stickerId, x, y);
+            }
+            
+            touchStartX = null;
+            touchStartY = null;
+            isDragging = false;
+        }, { passive: false });
+        
+        item.addEventListener('touchcancel', function(e) {
+            this.style.opacity = '1';
+            this.style.transform = 'scale(1)';
+            this.style.transition = '';
+            touchStartX = null;
+            touchStartY = null;
+            isDragging = false;
+        }, { passive: false });
     });
     
     if (canvas) {
         canvas.addEventListener('dragover', function(e) {
             e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
         });
         
         canvas.addEventListener('drop', function(e) {
@@ -482,6 +618,185 @@ function initDragAndDrop() {
             addStickerToCanvas(stickerId, x, y);
         });
     }
+}
+
+// Inicializar drop de stickers nas anotações
+function initNoteStickerDrop() {
+    const noteAreas = document.querySelectorAll('.note-stickers-area');
+    
+    noteAreas.forEach(area => {
+        // Suporte para drag HTML5 (desktop)
+        area.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+            this.style.backgroundColor = 'rgba(230, 213, 247, 0.3)';
+        });
+        
+        area.addEventListener('dragleave', function(e) {
+            this.style.backgroundColor = 'transparent';
+        });
+        
+        area.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.backgroundColor = 'transparent';
+            
+            const stickerId = e.dataTransfer.getData('text/plain');
+            if (!stickerId || stickerId === 'move') return;
+            
+            const noteId = parseInt(this.getAttribute('data-note-id'));
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            addStickerToNote(noteId, stickerId, x, y);
+        });
+    });
+}
+
+// Adicionar sticker a uma anotação
+function addStickerToNote(noteId, stickerId, x, y) {
+    const note = plannerData.notes.find(n => n.id === noteId);
+    if (!note) return;
+    
+    if (!note.stickers) {
+        note.stickers = [];
+    }
+    
+    // Verificar se já existe o sticker (evitar duplicatas muito próximas)
+    const existingSticker = note.stickers.find(s => {
+        const sId = s.id || s;
+        const sX = s.x || 0;
+        const sY = s.y || 0;
+        return sId === stickerId && Math.abs(sX - x) < 30 && Math.abs(sY - y) < 30;
+    });
+    
+    if (existingSticker) return;
+    
+    note.stickers.push({
+        id: stickerId,
+        x: x,
+        y: y
+    });
+    
+    savePlannerData();
+    renderNotes();
+}
+
+// Remover sticker de uma anotação
+function removeStickerFromNote(noteIndex, stickerId) {
+    const note = plannerData.notes[noteIndex];
+    if (!note || !note.stickers) return;
+    
+    note.stickers = note.stickers.filter(s => {
+        const sId = s.id || s;
+        return sId !== stickerId;
+    });
+    
+    savePlannerData();
+    renderNotes();
+}
+
+// Inicializar drag para stickers dentro das anotações
+function initNoteStickerDrag() {
+    const noteStickers = document.querySelectorAll('.note-sticker-item');
+    
+    noteStickers.forEach(sticker => {
+        let isDragging = false;
+        let offsetX, offsetY;
+        let startX, startY;
+        
+        // Mouse events (desktop)
+        sticker.addEventListener('mousedown', function(e) {
+            if (e.target.classList.contains('note-sticker-remove')) return;
+            e.preventDefault();
+            isDragging = true;
+            const rect = this.getBoundingClientRect();
+            const area = this.closest('.note-stickers-area');
+            const areaRect = area.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+            startX = parseInt(this.style.left) || 0;
+            startY = parseInt(this.style.top) || 0;
+            this.style.transition = 'none';
+            this.style.zIndex = '100';
+        });
+        
+        // Touch events (iPad/mobile)
+        sticker.addEventListener('touchstart', function(e) {
+            if (e.target.classList.contains('note-sticker-remove')) return;
+            e.preventDefault();
+            isDragging = true;
+            const touch = e.touches[0];
+            const rect = this.getBoundingClientRect();
+            const area = this.closest('.note-stickers-area');
+            const areaRect = area.getBoundingClientRect();
+            offsetX = touch.clientX - rect.left;
+            offsetY = touch.clientY - rect.top;
+            startX = parseInt(this.style.left) || 0;
+            startY = parseInt(this.style.top) || 0;
+            this.style.transition = 'none';
+            this.style.zIndex = '100';
+        }, { passive: false });
+        
+        const handleMove = function(e) {
+            if (!isDragging) return;
+            
+            const area = sticker.closest('.note-stickers-area');
+            if (!area) return;
+            
+            const areaRect = area.getBoundingClientRect();
+            let clientX, clientY;
+            
+            if (e.touches) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+            
+            const newX = clientX - areaRect.left - offsetX;
+            const newY = clientY - areaRect.top - offsetY;
+            
+            // Limitar dentro da área
+            const stickerRect = sticker.getBoundingClientRect();
+            const maxX = area.offsetWidth - stickerRect.width;
+            const maxY = area.offsetHeight - stickerRect.height;
+            
+            const finalX = Math.max(0, Math.min(newX, maxX));
+            const finalY = Math.max(0, Math.min(newY, maxY));
+            
+            sticker.style.left = `${finalX}px`;
+            sticker.style.top = `${finalY}px`;
+        };
+        
+        const handleEnd = function() {
+            if (!isDragging) return;
+            isDragging = false;
+            sticker.style.transition = 'transform 0.2s ease';
+            sticker.style.zIndex = '10';
+            
+            // Salvar nova posição
+            const noteIndex = parseInt(sticker.getAttribute('data-note-index'));
+            const stickerId = sticker.getAttribute('data-sticker-id');
+            const note = plannerData.notes[noteIndex];
+            
+            if (note && note.stickers) {
+                const stickerData = note.stickers.find(s => (s.id || s) === stickerId);
+                if (stickerData) {
+                    stickerData.x = parseInt(sticker.style.left) || 0;
+                    stickerData.y = parseInt(sticker.style.top) || 0;
+                    savePlannerData();
+                }
+            }
+        };
+        
+        document.addEventListener('mousemove', handleMove);
+        document.addEventListener('mouseup', handleEnd);
+        document.addEventListener('touchmove', handleMove, { passive: false });
+        document.addEventListener('touchend', handleEnd);
+        document.addEventListener('touchcancel', handleEnd);
+    });
 }
 
 function addStickerToCanvas(stickerId, x, y) {
@@ -663,5 +978,30 @@ function saveStickers() {
 // Inicializar quando a página carregar
 document.addEventListener('DOMContentLoaded', function() {
     initPlanner();
+    
+    // Re-inicializar drag and drop quando novos elementos são adicionados
+    const observer = new MutationObserver(function() {
+        // Re-inicializar apenas se houver novos sticker-items
+        const allStickerItems = document.querySelectorAll('.sticker-item');
+        if (allStickerItems.length > 0) {
+            // Verificar se já foram inicializados
+            const firstItem = allStickerItems[0];
+            if (!firstItem.hasAttribute('data-drag-initialized')) {
+                initDragAndDrop();
+                allStickerItems.forEach(item => {
+                    item.setAttribute('data-drag-initialized', 'true');
+                });
+            }
+        }
+    });
+    
+    // Observar mudanças no DOM da seção de planner
+    const plannerSection = document.getElementById('planner-section');
+    if (plannerSection) {
+        observer.observe(plannerSection, {
+            childList: true,
+            subtree: true
+        });
+    }
 });
 

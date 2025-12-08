@@ -1547,6 +1547,71 @@ textarea {
     line-height: 1.8;
     color: var(--color-text);
     white-space: pre-wrap;
+    margin-bottom: 15px;
+}
+
+/* Área de stickers nas anotações */
+.note-stickers-area {
+    position: relative;
+    min-height: 100px;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 2px dashed rgba(230, 213, 247, 0.5);
+    transition: all 0.3s ease;
+}
+
+.note-stickers-area:hover {
+    border-color: rgba(230, 213, 247, 0.8);
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.note-sticker-item {
+    position: absolute;
+    cursor: grab;
+    z-index: 10;
+    transition: transform 0.2s ease;
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.note-sticker-item:active {
+    cursor: grabbing;
+    transform: scale(1.1);
+    z-index: 100;
+}
+
+.note-sticker-remove {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(212, 165, 165, 0.9);
+    border: none;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.note-sticker-item:hover .note-sticker-remove {
+    opacity: 1;
+}
+
+.note-sticker-remove:hover {
+    background: rgba(212, 165, 165, 1);
+    transform: scale(1.1);
 }
 
 /* Stickers */
@@ -1585,6 +1650,10 @@ textarea {
     border-radius: 15px;
     padding: 10px;
     text-align: center;
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
     cursor: grab;
     transition: all 0.3s ease;
     user-select: none;
