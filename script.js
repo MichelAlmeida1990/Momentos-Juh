@@ -770,67 +770,11 @@ function editPlannerBook(plannerBookIndex) {
             });
             
             // Modificar o botão de submit para editar
-            const form = document.getElementById('add-book-form');
-            const submitBtn = form.querySelector('button[type="submit"]');
-            submitBtn.textContent = '💾 Salvar Alterações';
-            submitBtn.setAttribute('data-edit-index', plannerBookIndex);
-            
-            // Remover listener antigo e adicionar novo para edição
-            const newForm = form.cloneNode(true);
-            form.parentNode.replaceChild(newForm, form);
-            
-            newForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Coletar dados
-                const selectedStickers = Array.from(document.querySelectorAll('.book-sticker-check:checked'))
-                    .map(cb => cb.value);
-                
-                const editedBook = {
-                    id: book.id,
-                    title: document.getElementById('book-title').value,
-                    author: document.getElementById('book-author').value,
-                    cover: document.getElementById('book-cover').value || 'lavender',
-                    status: document.getElementById('book-status').value,
-                    stickers: selectedStickers,
-                    startDate: document.getElementById('book-start-date').value || null,
-                    endDate: document.getElementById('book-end-date').value || null,
-                    rating: parseInt(document.getElementById('book-rating').value) || 0,
-                    notes: document.getElementById('book-notes').value || ''
-                };
-                
-                // Atualizar livro
-                plannerData.books[plannerBookIndex] = editedBook;
-                
-                // Salvar
-                if (typeof savePlannerData === 'function') {
-                    savePlannerData();
-                } else {
-                    localStorage.setItem('julianaPlanner', JSON.stringify(plannerData));
-                }
-                
-                // Atualizar referência global
-                if (typeof window !== 'undefined') {
-                    window.plannerData = plannerData;
-                }
-                
-                // Fechar modal e recarregar
-                if (typeof closeAddBookModal === 'function') {
-                    closeAddBookModal();
-                }
-                
-                // Recarregar biblioteca
-                const activeFilter = document.querySelector('.library-filter-btn.active')?.getAttribute('data-filter') || 'all';
-                if (typeof renderUnifiedLibrary === 'function') {
-                    renderUnifiedLibrary(activeFilter);
-                }
-                
-                // Recarregar lista de livros no planner
-                if (typeof renderBooks === 'function') {
-                    const activeStatus = document.querySelector('.status-tab.active')?.getAttribute('data-status') || 'reading';
-                    renderBooks(activeStatus);
-                }
-            });
+            const submitBtn = document.querySelector('#add-book-form button[type="submit"]');
+            if (submitBtn) {
+                submitBtn.textContent = '💾 Salvar Alterações';
+                submitBtn.setAttribute('data-edit-index', plannerBookIndex);
+            }
         }, 100);
     }
 }
